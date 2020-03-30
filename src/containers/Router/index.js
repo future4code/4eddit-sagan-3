@@ -7,7 +7,7 @@ import FeedPage from "../FeedPage";
 import RegisterPage from "../RegisterPage";
 
 
-const routes = {
+export const routes = {
   root: "/",
   register: "/register",
   feed: "/posts/feed",
