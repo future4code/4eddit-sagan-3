@@ -32,7 +32,7 @@ width: 150px;
 
 class LoginPage extends Component {
   render() {
-    const { goToLogin } = this.props
+    const { goToRegister, goToFeed } = this.props
     return (
       <div>
         <Appbar />
@@ -42,11 +42,11 @@ class LoginPage extends Component {
           <FormLogin autoComplete="on">
             <TextField id="email" label="E-mail" variant="outlined" margin="normal" />
             <TextField id="senha" label="Senha" variant="outlined" margin="normal" />
-            <ButtonStyled type="submit" color="primary" variant="contained"> Entrar </ButtonStyled>
+            <ButtonStyled onClick={goToFeed} type="submit" color="primary" variant="contained"> Entrar </ButtonStyled>
           </FormLogin>
 
           <ButtonStyled
-            onClick={goToLogin}
+            onClick={goToRegister}
             color="primary"
             variant="contained">
             Cadastrar </ButtonStyled>
@@ -58,7 +58,8 @@ class LoginPage extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    goToLogin: () => dispatch(push(routes.register))
+    goToRegister: () => dispatch(push(routes.register)),
+    goToFeed: () => dispatch(push(routes.feed))
   }
 }
 
