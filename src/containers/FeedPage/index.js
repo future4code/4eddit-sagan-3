@@ -6,7 +6,7 @@ import { routes } from '../Router'
 import Appbar from "../../components/Appbar";
 
 import styled from 'styled-components';
-import { TextField, Button, Card, CardHeader, CardContent, Typography, CardActions, IconButton } from "@material-ui/core";
+import { TextField, Button, Card, CardHeader, CardContent, Typography, CardActions, IconButton, Paper } from "@material-ui/core";
 import {ArrowDownwardRounded, ArrowUpwardRounded} from '@material-ui/icons';
 
 
@@ -20,6 +20,9 @@ justify-content: center;
 @media screen and (max-device-width: 1200px){
  width: 90vw;
 }
+`
+const BoxPostWrapper = styled(Paper) `
+margin: 1rem;
 `
 const FormCreatePost = styled.form`
 display:flex;
@@ -65,15 +68,19 @@ class FeedPage extends Component {
   render() {
     return (
       <div>
-        <Appbar />
+        <Appbar page={"feed"}/>
         <FeedWrapper>
-          <FormCreatePost
-            autoComplete="on"
-            onSubmit={this.handleSubmission}>
-            <TextField id="post" label="Escreva aqui" variant="outlined" margin="normal" multiline rows={5}/>
 
-            <ButtonStyled type="submit" color="primary" variant="contained"> Cadastrar </ButtonStyled>
-          </FormCreatePost>
+          <BoxPostWrapper>
+            <FormCreatePost
+              autoComplete="on"
+              onSubmit={this.handleSubmission}>
+              <TextField id="post" label="Escreva aqui" variant="outlined"  multiline rows={5} />
+
+              <ButtonStyled type="submit" color="primary" variant="contained"> Postar </ButtonStyled>
+            </FormCreatePost>
+          </BoxPostWrapper>
+
           {
             [1, 2, 3].map(item => (
               <CardPost key={item}>
