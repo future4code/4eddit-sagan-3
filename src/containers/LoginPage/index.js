@@ -47,14 +47,6 @@ class LoginPage extends Component {
                 <ButtonStyled onClick={goToFeed} type="submit" color="primary" variant="contained"> Entrar </ButtonStyled>
               </FormLogin>
 
-              {/* <ButtonStyled
-            onClick={goToRegister}
-            color="primary"
-            variant="contained"
-          >
-            Cadastrar 
-          </ButtonStyled> */}
-
               <RegisterWrapper>
                 <Typography variant="subtitle1" color="textSecondary" component="p">
                   Não tem cadastro? <Button color="primary" onClick={goToRegister}>
