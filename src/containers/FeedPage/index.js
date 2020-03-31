@@ -17,7 +17,6 @@ class FeedPage extends Component {
     this.props.getPosts()
   }
 
-
   handleSubmission = (event) => {
     event.preventDefault()
     alert("Post cadastrado com sucesso!")

@@ -21,7 +21,7 @@ class LoginPage extends Component {
   handleSubmit = (event) => {
     event.preventDefault()
     this.props.login(this.state.loginData)
-    // this.props.goToFeed()
+    this.props.goToFeed()
   }
 
   handleTextFieldChange = (event) => {
