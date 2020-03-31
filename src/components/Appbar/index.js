@@ -11,6 +11,7 @@ import { ToolbarStyled, Logo } from './styles'
 class Appbar extends Component {
 
   logout = () => {
+    localStorage.clear()
     this.props.goToLogin()
   }
 
