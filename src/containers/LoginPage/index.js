@@ -21,7 +21,6 @@ class LoginPage extends Component {
   handleSubmit = (event) => {
     event.preventDefault()
     this.props.login(this.state.loginData)
-    this.props.goToFeed()
   }
 
   handleTextFieldChange = (event) => {
@@ -101,7 +100,6 @@ class LoginPage extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     goToRegister: () => dispatch(push(routes.register)),
-    goToFeed: () => dispatch(push(routes.feed)),
     login: (loginData) => dispatch(login(loginData))
   }
 }

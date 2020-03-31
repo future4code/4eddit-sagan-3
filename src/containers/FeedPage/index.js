@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { routes } from '../Router'
-import { getPosts } from '../../actions'
+import { getPosts, createPost } from '../../actions'
 
 import Appbar from "../../components/Appbar";
 
@@ -12,14 +12,25 @@ import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 import { BoxPostWrapper, ButtonStyled, CardPost, Comments, FeedWrapper, FormCreatePost, PostFooter, PostHeader, VotesWrapper } from './styles'
 
 class FeedPage extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      createPostData: {}
+    }
+  }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.props.getPosts()
   }
 
   handleSubmission = (event) => {
     event.preventDefault()
-    alert("Post cadastrado com sucesso!")
+    this.props.createPost(this.state.createPostData)
+    this.setState ({
+      createPostData: {
+        [event.target.name]: ""
+      }
+    })
   }
 
   handlePostClicked = (postId) => {
@@ -27,9 +38,20 @@ class FeedPage extends Component {
     console.log(postId)
   }
 
+  handleTextFieldChange = (event) => {
+    this.setState({
+      createPostData: {
+        ...this.state.createPostData,
+        [event.target.name]: event.target.value
+      }
+    })
+  }
+
+
   render() {
     const { allPosts } = this.props
-    console.log(allPosts)
+    // console.log(allPosts)
+    // console.log(this.state.createPostData)
     return (
       <>
         <Appbar page={"feed"} />
@@ -49,6 +71,9 @@ class FeedPage extends Component {
                   maxLength: 50,
                   title: "O campo Título não pode ficar vazio."
                 }}
+                  name="title"
+                  value={this.state.createPostData.title || ""}
+                  onChange={this.handleTextFieldChange}
               />
 
               <TextField id="post" label="Escreva aqui" margin="normal" variant="outlined" multiline rows={5}
@@ -59,6 +84,9 @@ class FeedPage extends Component {
                   maxLength: 280,
                   title: "O campo Post não pode ficar vazio."
                 }}
+                  name="text"
+                  value={this.state.createPostData.text || ""}
+                  onChange={this.handleTextFieldChange}
               />
 
               <ButtonStyled type="submit" color="primary" variant="contained"> Postar </ButtonStyled>
@@ -116,7 +144,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     goToLogin: () => dispatch(push(routes.root)),
     goToDetail: () => dispatch(push(routes.detail)),
-    getPosts: () => dispatch(getPosts())
+    getPosts: () => dispatch(getPosts()),
+    createPost: (createPostData) => dispatch(createPost(createPostData))
   }
 }
 

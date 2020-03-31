@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { routes } from '../containers/Router'
+import { push } from "connected-react-router";
 
 const baseUrl = "https://us-central1-missao-newton.cloudfunctions.net/fourEddit"
 
@@ -29,7 +31,7 @@ export const login = (loginData) => async (dispatch) => {
         const user = response.data.user
         localStorage.setItem("token", token)
         localStorage.setItem("user", JSON.stringify(user))
-
+        dispatch(push(routes.feed))
     } catch (error) {
         console.error(error.message)
         alert("Não foi possível efetuar o login.")
@@ -48,6 +50,7 @@ export const getPosts = () => async (dispatch) => {
 
     try {
         const token = localStorage.getItem("token")
+        // console.log(token)
         const response = await axios.get(`${baseUrl}/posts`, {
             headers: {
                 auth: token
@@ -60,3 +63,29 @@ export const getPosts = () => async (dispatch) => {
     }
 
 }
+
+export const createPost = (createPostData) => async (dispatch) => {
+    // console.log(createPostData)
+    const newData = {
+        text: createPostData.text,
+        title: createPostData.title
+    }
+    // console.log(newData)
+    try {
+        const token = localStorage.getItem("token")
+        console.log(token)
+        await axios.post(`${baseUrl}/posts`,
+            {
+                headers: {
+                    auth: token
+                }
+            },
+            newData
+        )
+
+        alert("Post cadastrado com sucesso!")
+    } catch (error) {
+        console.error(error.message)
+        alert("Não foi possível criar seu post.")
+    }
+} 
