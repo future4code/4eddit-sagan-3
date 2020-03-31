@@ -5,53 +5,70 @@ import { routes } from '../Router'
 
 import Appbar from "../../components/Appbar";
 
-import styled from 'styled-components';
-import { TextField, Button } from "@material-ui/core";
+import { TextField, Button, Typography } from "@material-ui/core";
 
-const LoginWrapper = styled.div`
-display: flex;
-flex-direction: column;
-margin: 2rem auto;
-width: 30vw;
-min-height: 80vh;
-justify-content: center;
-@media screen and (max-device-width: 1200px){
- width: 90vw;
-}
-`
-const FormLogin = styled.form`
-display:flex;
-flex-direction: column;
-`
-const ButtonStyled = styled(Button)`
-margin: 1rem auto;
-width: 150px;
-
-`
-
+import { ButtonStyled, FormLogin, LoginWrapper, RegisterWrapper } from './styles'
 
 class LoginPage extends Component {
   render() {
     const { goToRegister, goToFeed } = this.props
+    
+    const token = localStorage.getItem('token') // vamos setar ele no login
+    const username = localStorage.getItem('username')
+
     return (
-      <div>
-        <Appbar />
+      <>
+        <Appbar page={'login'}
+          token={token}
+        />
+
         <LoginWrapper>
-          <h1>Login</h1>
 
-          <FormLogin autoComplete="on">
-            <TextField id="email" label="E-mail" variant="outlined" margin="normal" />
-            <TextField id="senha" label="Senha" variant="outlined" margin="normal" />
-            <ButtonStyled onClick={goToFeed} type="submit" color="primary" variant="contained"> Entrar </ButtonStyled>
-          </FormLogin>
+          {token ?
 
-          <ButtonStyled
+            <Typography variant="h4" color="textSecondary" component="p">
+              Bem vindx {username}
+            </Typography>
+
+            :
+
+            <>
+              <h1>Login</h1>
+
+              <FormLogin autoComplete="on">
+                <TextField
+                  id="email" label="E-mail" variant="outlined" margin="normal"
+                  type="email"
+                />
+                <TextField
+                  id="senha" label="Senha" variant="outlined" margin="normal"
+                  type="password"
+                />
+                <ButtonStyled onClick={goToFeed} type="submit" color="primary" variant="contained"> Entrar </ButtonStyled>
+              </FormLogin>
+
+              {/* <ButtonStyled
             onClick={goToRegister}
             color="primary"
-            variant="contained">
-            Cadastrar </ButtonStyled>
+            variant="contained"
+          >
+            Cadastrar 
+          </ButtonStyled> */}
+
+              <RegisterWrapper>
+                <Typography variant="subtitle1" color="textSecondary" component="p">
+                  Não tem cadastro? <Button color="primary" onClick={goToRegister}>
+                    Criar conta
+              </Button>
+                </Typography>
+              </RegisterWrapper>
+            </>
+          }
+
         </LoginWrapper>
-      </div>
+
+
+      </>
     );
   }
 }
