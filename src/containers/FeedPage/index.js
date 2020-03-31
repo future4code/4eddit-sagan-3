@@ -14,7 +14,7 @@ class FeedPage extends Component {
 
   handleSubmission = (event) => {
     event.preventDefault()
-    this.props.goToLogin()
+    alert("Post cadastrado com sucesso!")
   }
 
   handlePostClicked = () => {
@@ -32,7 +32,16 @@ class FeedPage extends Component {
             <FormCreatePost
               autoComplete="on"
               onSubmit={this.handleSubmission}>
-              <TextField id="post" label="Escreva aqui" variant="outlined" multiline rows={5} />
+
+              <TextField id="post" label="Escreva aqui" variant="outlined" multiline rows={5} 
+              type="text"
+              required
+              inputProps = {{
+                pattern: ".{1,}",
+                maxLength: 280,
+                title:"O campo Post não pode ficar vazio."
+              }}
+              />
 
               <ButtonStyled type="submit" color="primary" variant="contained"> Postar </ButtonStyled>
             </FormCreatePost>

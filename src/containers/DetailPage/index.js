@@ -14,7 +14,7 @@ class DetailPage extends Component {
 
   handleSubmission = (event) => {
     event.preventDefault()
-    this.props.goToLogin()
+    alert("Comentário criado com sucesso!")
   }
 
   handlePostClicked = () => {
@@ -59,7 +59,15 @@ class DetailPage extends Component {
             <FormCreateComment
               autoComplete="off"
               onSubmit={this.handleSubmission}>
-              <TextField id="comment" label="Escreva seu comentário" variant="outlined" multiline rows={2} />
+              <TextField id="comment" label="Escreva seu comentário" variant="outlined" multiline rows={2}
+              type="text"
+              required
+              inputProps = {{
+                pattern: ".{1,}",
+                maxLength: 180,
+                title:"O campo Comentário não pode ficar vazio."
+              }}
+              />
               <ButtonStyled type="submit" color="primary" variant="contained"> Comentar </ButtonStyled>
             </FormCreateComment>
           </BoxCommentWrapper>
