@@ -60,7 +60,7 @@ class Appbar extends Component {
           <ToolbarStyled variant="dense">
 
             <Logo variant="h6" color="inherit" onClick={goToLogin}>
-              4Reddit
+              4eddit
             </Logo>
 
             {buttonsPersonalized}

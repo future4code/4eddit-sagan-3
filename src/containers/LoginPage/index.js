@@ -10,9 +10,15 @@ import { TextField, Button, Typography } from "@material-ui/core";
 import { ButtonStyled, FormLogin, LoginWrapper, RegisterWrapper } from './styles'
 
 class LoginPage extends Component {
+
+  handleSubmit = (event) => {
+    event.preventDefault()
+    this.props.goToFeed()
+  }
+
   render() {
-    const { goToRegister, goToFeed } = this.props
-    
+    const { goToRegister } = this.props
+
     const token = localStorage.getItem('token') // vamos setar ele no login
     const username = localStorage.getItem('username')
 
@@ -35,16 +41,18 @@ class LoginPage extends Component {
             <>
               <h1>Login</h1>
 
-              <FormLogin autoComplete="on">
+              <FormLogin autoComplete="on" onSubmit={this.handleSubmit}>
                 <TextField
                   id="email" label="E-mail" variant="outlined" margin="normal"
                   type="email"
+                  required
                 />
                 <TextField
                   id="senha" label="Senha" variant="outlined" margin="normal"
                   type="password"
+                  required
                 />
-                <ButtonStyled onClick={goToFeed} type="submit" color="primary" variant="contained"> Entrar </ButtonStyled>
+                <ButtonStyled type="submit" color="primary" variant="contained"> Entrar </ButtonStyled>
               </FormLogin>
 
               <RegisterWrapper>
