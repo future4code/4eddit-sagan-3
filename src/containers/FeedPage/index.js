@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { routes } from '../Router'
+import { getPosts } from '../../actions'
 
 import Appbar from "../../components/Appbar";
 
@@ -12,20 +13,28 @@ import { BoxPostWrapper, ButtonStyled, CardPost, Comments, FeedWrapper, FormCrea
 
 class FeedPage extends Component {
 
+  componentDidMount() {
+    this.props.getPosts()
+  }
+
+
   handleSubmission = (event) => {
     event.preventDefault()
     alert("Post cadastrado com sucesso!")
   }
 
-  handlePostClicked = () => {
-    this.props.goToDetail()
+  handlePostClicked = (postId) => {
+    // this.props.goToDetail()
+    console.log(postId)
   }
 
   render() {
+    const { allPosts } = this.props
+    console.log(allPosts)
     return (
       <>
         <Appbar page={"feed"} />
-        
+
         <FeedWrapper>
 
           <BoxPostWrapper>
@@ -33,14 +42,24 @@ class FeedPage extends Component {
               autoComplete="on"
               onSubmit={this.handleSubmission}>
 
-              <TextField id="post" label="Escreva aqui" variant="outlined" multiline rows={5} 
-              type="text"
-              required
-              inputProps = {{
-                pattern: ".{1,}",
-                maxLength: 280,
-                title:"O campo Post não pode ficar vazio."
-              }}
+              <TextField id="post" label="Título" variant="outlined"
+                type="text"
+                required
+                inputProps={{
+                  pattern: ".{1,}",
+                  maxLength: 50,
+                  title: "O campo Título não pode ficar vazio."
+                }}
+              />
+
+              <TextField id="post" label="Escreva aqui" margin="normal" variant="outlined" multiline rows={5}
+                type="text"
+                required
+                inputProps={{
+                  pattern: ".{1,}",
+                  maxLength: 280,
+                  title: "O campo Post não pode ficar vazio."
+                }}
               />
 
               <ButtonStyled type="submit" color="primary" variant="contained"> Postar </ButtonStyled>
@@ -48,14 +67,17 @@ class FeedPage extends Component {
           </BoxPostWrapper>
 
           {
-            [1, 2, 3].map(item => (
-              <CardPost key={item}>
+            allPosts.map(post => (
+              <CardPost key={post.id}>
 
-                <CardActionArea onClick={this.handlePostClicked}>
-                  <PostHeader title="Fulano" />
+                <CardActionArea onClick={() => this.handlePostClicked(post.id)}>
+                  <PostHeader title={post.username} />
                   <CardContent>
+                    <Typography variant="h6" component="p">
+                      {post.title}
+                    </Typography>
                     <Typography variant="body1" color="textSecondary" component="p">
-                      Texto do post.
+                      {post.text}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -66,7 +88,7 @@ class FeedPage extends Component {
                       <ArrowUpwardRounded color="primary" />
                     </IconButton>
                     <Typography>
-                      0 
+                      {post.votesCount}
                     </Typography>
                     <IconButton>
                       <ArrowDownwardRounded color="secondary" />
@@ -74,7 +96,7 @@ class FeedPage extends Component {
                   </VotesWrapper>
 
                   <Comments onClick={this.handlePostClicked}>
-                    0 comentários
+                    {post.commentsNumber} comentários
                   </Comments>
                 </PostFooter>
 
@@ -87,11 +109,16 @@ class FeedPage extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  allPosts: state.posts.allPosts
+})
+
 const mapDispatchToProps = (dispatch) => {
   return {
     goToLogin: () => dispatch(push(routes.root)),
-    goToDetail: () => dispatch(push(routes.detail))
+    goToDetail: () => dispatch(push(routes.detail)),
+    getPosts: () => dispatch(getPosts())
   }
 }
 
-export default connect(null, mapDispatchToProps)(FeedPage);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedPage);
