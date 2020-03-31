@@ -29,16 +29,27 @@ class RegisterPage extends Component {
             <TextField 
               id="nome-do-usuario" label="Nome do Usuário" variant="outlined" margin="normal"
               type="text"
+              required
+              inputProps={{
+                pattern: "[a-z]{3,}", 
+                title:"O campo Nome do Usuário  deve ter no mínimo 3 letras minúsculas, sem espaço.",
+              }}
             />
 
             <TextField 
               id="email" label="E-mail" variant="outlined" margin="normal"
               type="email"
+              required
             />
 
             <TextField 
               id="senha" label="Senha" variant="outlined" margin="normal"
               type="password"
+              required
+              inputProps={{
+                pattern: "[A-Za-z0-9]{5,}", 
+                title:"O campo Senha deve ter no mínimo 5 letras ou números, sem espaço.",
+              }}
             />
 
             <ButtonStyled type="submit" color="primary" variant="contained">
