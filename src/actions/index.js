@@ -23,10 +23,8 @@ export const signup = (registerData) => async (dispatch) => {
 }
 
 export const login = (loginData) => async (dispatch) => {
-    // console.log("chegou!", loginData)
     try {
         const response = await axios.post(`${baseUrl}/login`, loginData)
-        // console.log(response.data)
         const token = response.data.token
         const user = response.data.user
         localStorage.setItem("token", token)
@@ -50,7 +48,6 @@ export const getPosts = () => async (dispatch) => {
 
     try {
         const token = localStorage.getItem("token")
-        // console.log(token)
         const response = await axios.get(`${baseUrl}/posts`, {
             headers: {
                 auth: token
@@ -65,27 +62,151 @@ export const getPosts = () => async (dispatch) => {
 }
 
 export const createPost = (createPostData) => async (dispatch) => {
-    // console.log(createPostData)
     const newData = {
         text: createPostData.text,
         title: createPostData.title
     }
-    // console.log(newData)
     try {
         const token = localStorage.getItem("token")
-        console.log(token)
         await axios.post(`${baseUrl}/posts`,
+            newData,
             {
                 headers: {
                     auth: token
                 }
-            },
-            newData
+            }
         )
-
         alert("Post cadastrado com sucesso!")
+        dispatch(getPosts())
     } catch (error) {
         console.error(error.message)
         alert("Não foi possível criar seu post.")
     }
-} 
+}
+
+export const vote = (id, direction) => async (dispatch, getState) => {
+    console.log(id, direction)
+    const token = localStorage.getItem("token")
+
+    try {
+        await axios.put(`${baseUrl}/posts/${id}/vote`,
+            { direction: direction },
+            {
+                headers: {
+                    auth: token
+                }
+            }
+        )
+        dispatch(getPosts())
+        // const state = getState();
+        // if(state.posts.postId){
+        //     dispatch(getPostsDetail(state.posts.postId))
+        // }
+
+    } catch (error) {
+        console.error(error.message)
+        alert("Não foi possível votar no post.")
+    }
+}
+
+
+export const voteInDetail = (id, direction) => async (dispatch, getState) => {
+    console.log(id, direction)
+    const token = localStorage.getItem("token")
+
+    try {
+        await axios.put(`${baseUrl}/posts/${id}/vote`,
+            { direction: direction },
+            {
+                headers: {
+                    auth: token
+                }
+            }
+        )
+
+        dispatch(getPostsDetail(id))
+
+
+    } catch (error) {
+        console.error(error.message)
+        alert("Não foi possível votar no post.")
+    }
+}
+
+
+
+const setPostDetail = (post) => ({
+    type: 'SET_POST_DETAIL',
+    payload: {
+        post
+    }
+})
+
+const setPostId = (id) => ({
+    type: 'SET_POST_ID',
+    payload: {
+        id
+    }
+})
+
+export const getPostId = (postId) => async (dispatch) => {
+    dispatch(setPostId(postId))
+}
+
+
+export const getPostsDetail = (postId) => async (dispatch) => {
+    try {
+        const token = localStorage.getItem("token")
+        const response = await axios.get(`${baseUrl}/posts/${postId}`, {
+            headers: {
+                auth: token
+            }
+        })
+        dispatch(setPostDetail(response.data.post))
+        dispatch(push(routes.detail))
+    } catch (error) {
+        console.error(error.message)
+        alert("Não foi possível acessar os detalhes do post.")
+    }
+}
+
+
+export const createComment = (createCommentData, postId) => async (dispatch) => {
+    console.log(createCommentData, postId)
+    try {
+        const token = localStorage.getItem("token")
+        await axios.post(`${baseUrl}/posts/${postId}/comment`,
+            { text: createCommentData },
+            {
+                headers: {
+                    auth: token
+                }
+            }
+        )
+        dispatch(getPostsDetail(postId))
+
+    } catch (error) {
+        console.error(error.message)
+        alert("Não foi possível criar seu comentário.")
+    }
+}
+
+export const voteComment = (postId, commentId, direction) => async (dispatch) => {
+    console.log(postId, commentId, direction)
+    const token = localStorage.getItem("token")
+
+    try {
+        await axios.put(`${baseUrl}/posts/${postId}/comment/${commentId}/vote`,
+            { direction: direction },
+            {
+                headers: {
+                    auth: token
+                }
+            }
+        )
+        dispatch(getPostsDetail(postId))
+    } catch (error) {
+        console.error(error.message)
+        alert("Não foi possível votar no comentário.")
+    }
+}

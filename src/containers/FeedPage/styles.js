@@ -16,6 +16,7 @@ export const FeedWrapper = styled.div`
 
 export const BoxPostWrapper = styled(Paper)`
   margin: 1rem;
+  padding: 0 1rem;
 `
 
 export const FormCreatePost = styled.form`
@@ -49,4 +50,9 @@ export const Comments = styled(Typography)`
   :hover{
     cursor: pointer;
   }
+`
+
+export const TitleCreatePost = styled(Typography)`
+  text-align:center;
+  margin: 1rem;
 `

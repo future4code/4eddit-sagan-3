@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { push } from "connected-react-router";
-import { routes } from '../Router'
-import { getPosts, createPost } from '../../actions'
+import { getPosts, createPost, vote, getPostsDetail, getPostId } from '../../actions'
 
 import Appbar from "../../components/Appbar";
 
 import { TextField, CardContent, Typography, CardActionArea, IconButton } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { BoxPostWrapper, ButtonStyled, CardPost, Comments, FeedWrapper, FormCreatePost, PostFooter, PostHeader, VotesWrapper } from './styles'
+import { BoxPostWrapper, ButtonStyled, CardPost, Comments, FeedWrapper, FormCreatePost, PostFooter, PostHeader, VotesWrapper, TitleCreatePost } from './styles'
 
 class FeedPage extends Component {
   constructor(props) {
@@ -26,7 +24,7 @@ class FeedPage extends Component {
   handleSubmission = (event) => {
     event.preventDefault()
     this.props.createPost(this.state.createPostData)
-    this.setState ({
+    this.setState({
       createPostData: {
         [event.target.name]: ""
       }
@@ -34,8 +32,8 @@ class FeedPage extends Component {
   }
 
   handlePostClicked = (postId) => {
-    // this.props.goToDetail()
-    console.log(postId)
+    this.props.getPostsDetail(postId)
+    this.props.getPostId(postId)
   }
 
   handleTextFieldChange = (event) => {
@@ -47,11 +45,24 @@ class FeedPage extends Component {
     })
   }
 
+  onclickUp = (postId) => {
+    const thisDirection = + 1
+    this.props.vote(postId, thisDirection)
+  }
+
+  onclickDown = (postId) => {
+    const thisDirection = - 1
+    this.props.vote(postId, thisDirection)
+  }
 
   render() {
     const { allPosts } = this.props
-    // console.log(allPosts)
-    // console.log(this.state.createPostData)
+
+    const newAllPosts = [...allPosts]
+    const ordenedPosts = newAllPosts.sort((a, b) => {
+      return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0
+    })
+
     return (
       <>
         <Appbar page={"feed"} />
@@ -59,9 +70,14 @@ class FeedPage extends Component {
         <FeedWrapper>
 
           <BoxPostWrapper>
+
             <FormCreatePost
               autoComplete="on"
               onSubmit={this.handleSubmission}>
+
+              <TitleCreatePost variant="h4" component="p">
+                Criar Publicação
+                </TitleCreatePost>
 
               <TextField id="post" label="Título" variant="outlined"
                 type="text"
@@ -71,9 +87,9 @@ class FeedPage extends Component {
                   maxLength: 50,
                   title: "O campo Título não pode ficar vazio."
                 }}
-                  name="title"
-                  value={this.state.createPostData.title || ""}
-                  onChange={this.handleTextFieldChange}
+                name="title"
+                value={this.state.createPostData.title || ""}
+                onChange={this.handleTextFieldChange}
               />
 
               <TextField id="post" label="Escreva aqui" margin="normal" variant="outlined" multiline rows={5}
@@ -84,9 +100,9 @@ class FeedPage extends Component {
                   maxLength: 280,
                   title: "O campo Post não pode ficar vazio."
                 }}
-                  name="text"
-                  value={this.state.createPostData.text || ""}
-                  onChange={this.handleTextFieldChange}
+                name="text"
+                value={this.state.createPostData.text || ""}
+                onChange={this.handleTextFieldChange}
               />
 
               <ButtonStyled type="submit" color="primary" variant="contained"> Postar </ButtonStyled>
@@ -94,7 +110,7 @@ class FeedPage extends Component {
           </BoxPostWrapper>
 
           {
-            allPosts.map(post => (
+            ordenedPosts.map(post => (
               <CardPost key={post.id}>
 
                 <CardActionArea onClick={() => this.handlePostClicked(post.id)}>
@@ -111,13 +127,13 @@ class FeedPage extends Component {
 
                 <PostFooter>
                   <VotesWrapper>
-                    <IconButton>
+                    <IconButton onClick={() => this.onclickUp(post.id)}>
                       <ArrowUpwardRounded color="primary" />
                     </IconButton>
                     <Typography>
                       {post.votesCount}
                     </Typography>
-                    <IconButton>
+                    <IconButton onClick={() => this.onclickDown(post.id)}>
                       <ArrowDownwardRounded color="secondary" />
                     </IconButton>
                   </VotesWrapper>
@@ -142,10 +158,11 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    goToLogin: () => dispatch(push(routes.root)),
-    goToDetail: () => dispatch(push(routes.detail)),
     getPosts: () => dispatch(getPosts()),
-    createPost: (createPostData) => dispatch(createPost(createPostData))
+    createPost: (createPostData) => dispatch(createPost(createPostData)),
+    vote: (id, direction) => dispatch(vote(id, direction)),
+    getPostsDetail: (postId) => dispatch(getPostsDetail(postId)),
+    getPostId: (postId) => dispatch(getPostId(postId)),
   }
 }
 

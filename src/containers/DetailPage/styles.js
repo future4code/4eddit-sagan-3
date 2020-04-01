@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button, Card, CardHeader, CardContent, CardActions, Paper } from "@material-ui/core";
+import { Button, Card, CardHeader, CardContent, CardActions, Paper, Typography } from "@material-ui/core";
 
 export const DetailWrapper = styled.div`
   display: flex;
@@ -16,6 +16,7 @@ export const DetailWrapper = styled.div`
 
 export const BoxCommentWrapper = styled(Paper)`
   margin: 1rem;
+  padding: 0 1rem;
 `
 
 export const FormCreateComment = styled.form`
@@ -48,4 +49,15 @@ export const PostFooter = styled(CardContent)`
 export const CommentHeader = styled(CardHeader)`
   text-align: center;
   padding-bottom: 0;
+`
+
+export const TitleCreateComment = styled(Typography)`
+  text-align:center;
+  margin: 1rem;
+`
+
+export const Comments = styled(Typography)`
+  :hover{
+    cursor: pointer;
+  }
 `
