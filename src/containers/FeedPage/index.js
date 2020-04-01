@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { routes } from '../Router'
-import { getPosts, createPost, vote, getPostsDetail } from '../../actions'
+import { getPosts, createPost, vote, getPostsDetail, getPostId } from '../../actions'
 
 import Appbar from "../../components/Appbar";
 
@@ -36,6 +36,7 @@ class FeedPage extends Component {
   handlePostClicked = (postId) => {
     // console.log(postId)
     this.props.getPostsDetail(postId)
+    this.props.getPostId(postId)
   }
 
   handleTextFieldChange = (event) => {
@@ -48,13 +49,13 @@ class FeedPage extends Component {
   }
 
     onclickUp = (postId, postVotesCount) => {
-      const thisDirection = Number(postVotesCount) + 1
+      const thisDirection =  + 1
       // console.log("cliquei pra cima!", postId, thisDirection)
       this.props.vote(postId, thisDirection)
     }
 
     onclickDown = (postId, postVotesCount) => {
-      const thisDirection = Number(postVotesCount) - 1
+      const thisDirection =  - 1
       // console.log("cliquei pra baixo!", postId, thisDirection)
       this.props.vote(postId, thisDirection)
     }
@@ -64,7 +65,7 @@ class FeedPage extends Component {
     // console.log(allPosts)
     // console.log(this.state.createPostData)
 
-    const newAllPosts = allPosts
+    const newAllPosts = [...allPosts]
     const ordenedPosts = newAllPosts.sort((a, b) => {
       return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0 
     }) 
@@ -171,6 +172,7 @@ const mapDispatchToProps = (dispatch) => {
     createPost: (createPostData) => dispatch(createPost(createPostData)),
     vote: (id, direction) => dispatch(vote(id, direction)),
     getPostsDetail: (postId) => dispatch(getPostsDetail(postId)),
+    getPostId: (postId) => dispatch(getPostId(postId)),
   }
 }
 

@@ -90,7 +90,7 @@ export const createPost = (createPostData) => async (dispatch) => {
     }
 }
 
-export const vote = (id, direction) => async (dispatch) => {
+export const vote = (id, direction) => async (dispatch, getState) => {
     console.log(id, direction)
     const token = localStorage.getItem("token")
 
@@ -103,7 +103,36 @@ export const vote = (id, direction) => async (dispatch) => {
                 }
             }
         )
-            dispatch(getPosts())
+        dispatch(getPosts())
+        // const state = getState();
+        // if(state.posts.postId){
+        //     dispatch(getPostsDetail(state.posts.postId))
+        // }
+
+    } catch (error) {
+        console.error(error.message)
+        alert("Não foi possível votar no post.")
+    }
+}
+
+
+export const voteInDetail = (id, direction) => async (dispatch, getState) => {
+    console.log(id, direction)
+    const token = localStorage.getItem("token")
+
+    try {
+        await axios.put(`${baseUrl}/posts/${id}/vote`,
+            { direction: direction },
+            {
+                headers: {
+                    auth: token
+                }
+            }
+        )
+        
+            dispatch(getPostsDetail(id))
+        
+
     } catch (error) {
         console.error(error.message)
         alert("Não foi possível votar no post.")
@@ -119,9 +148,21 @@ const setPostDetail = (post) => ({
     }
 })
 
+const setPostId = (id) => ({
+    type: 'SET_POST_ID',
+    payload: {
+        id
+    }
+})
+
+export const getPostId = (postId) => async (dispatch) => {
+    // console.log(postId)
+    dispatch(setPostId(postId))
+}
+
+
 export const getPostsDetail = (postId) => async (dispatch) => {
-    console.log("CHEEEEGUEEEEEEEI!", postId)
-    // const id = localStorage.setItem("id", postId)
+    // console.log("CHEEEEGUEEEEEEEI!", postId)
     try {
         const token = localStorage.getItem("token")
         const response = await axios.get(`${baseUrl}/posts/${postId}`, {
@@ -131,6 +172,7 @@ export const getPostsDetail = (postId) => async (dispatch) => {
         })
         dispatch(setPostDetail(response.data.post))
         dispatch(push(routes.detail))
+        // dispatch(setPostId(postId))
     } catch (error) {
         console.error(error.message)
         alert("Não foi possível acessar os detalhes do post.")
@@ -139,21 +181,42 @@ export const getPostsDetail = (postId) => async (dispatch) => {
 
 
 export const createComment = (createCommentData, postId) => async (dispatch) => {
-    // console.log(createCommentData)
+    console.log(createCommentData, postId)
     try {
-        // const token = localStorage.getItem("token")
-        // await axios.post(`${baseUrl}/posts/${postId}/comment`,
-        //     createCommentData,
-        //     {
-        //         headers: {
-        //             auth: token
-        //         }
-        //     }
-        // )
-        // alert("Comentário cadastrado com sucesso!") // apagar isso!
-        // dispatch(getPostsDetail()) 
+        const token = localStorage.getItem("token")
+        await axios.post(`${baseUrl}/posts/${postId}/comment`,
+            { text: createCommentData },
+            {
+                headers: {
+                    auth: token
+                }
+            }
+        )
+        alert("Comentário cadastrado com sucesso!") // apagar isso!
+        dispatch(getPostsDetail(postId))
+
     } catch (error) {
         console.error(error.message)
         alert("Não foi possível criar seu comentário.")
+    }
+}
+
+export const voteComment = (postId, commentId, direction) => async (dispatch) => {
+    console.log(postId, commentId, direction)
+    const token = localStorage.getItem("token")
+
+    try {
+    //     await axios.put(`${baseUrl}/posts/${id}/vote`,
+    //         { direction: direction },
+    //         {
+    //             headers: {
+    //                 auth: token
+    //             }
+    //         }
+    //     )
+    //         dispatch(getPosts())
+    } catch (error) {
+        console.error(error.message)
+        alert("Não foi possível votar no post.")
     }
 }

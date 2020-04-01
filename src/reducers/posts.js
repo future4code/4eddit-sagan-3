@@ -1,6 +1,7 @@
 const initialState = {
     allPosts: [],
-    postDetail: null
+    postDetail: null,
+    postId: null,
 }
 
 
@@ -17,6 +18,12 @@ const posts = (state = initialState, action) => {
             return {
                 ...state,
                 postDetail: action.payload.post
+            }
+
+            case "SET_POST_ID":
+            return {
+                ...state,
+                postId: action.payload.id
             }
             
         default:
