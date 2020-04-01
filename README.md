@@ -1,4 +1,11 @@
-## Exercício da Semana:
+# Future4 | Full-Stack Web Development Bootcamp
+Desenvolvimento de aplicações completas, incluindo frontend Web com React e backend com Node.js.
+
+<p align="center">
+  <img  width='500' src='https://user-images.githubusercontent.com/45580434/74607837-f69f5e00-50ba-11ea-97e0-62fab855bcb6.png'>
+</p>
+
+## Projeto: 4eddit
 
 Essa semana, vocês irão implementar uma rede social! Já fizemos vários protótipos de redes sociais, mas nenhuma delas realmente funcional. A ideia agora é fazer uma rede real, com cadastro, login, posts, likes e comentários. Para isso, iremos nos basear no **[reddit.com](https://reddit.com).**
 
