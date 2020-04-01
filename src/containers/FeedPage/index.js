@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { routes } from '../Router'
-import { getPosts, createPost, vote } from '../../actions'
+import { getPosts, createPost, vote, getPostsDetail } from '../../actions'
 
 import Appbar from "../../components/Appbar";
 
@@ -34,8 +34,8 @@ class FeedPage extends Component {
   }
 
   handlePostClicked = (postId) => {
-    this.props.goToDetail()
-    console.log(postId)
+    // console.log(postId)
+    this.props.getPostsDetail(postId)
   }
 
   handleTextFieldChange = (event) => {
@@ -169,7 +169,8 @@ const mapDispatchToProps = (dispatch) => {
     goToDetail: () => dispatch(push(routes.detail)),
     getPosts: () => dispatch(getPosts()),
     createPost: (createPostData) => dispatch(createPost(createPostData)),
-    vote: (id, direction) => dispatch(vote(id, direction))
+    vote: (id, direction) => dispatch(vote(id, direction)),
+    getPostsDetail: (postId) => dispatch(getPostsDetail(postId)),
   }
 }
 

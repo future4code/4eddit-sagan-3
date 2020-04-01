@@ -120,21 +120,21 @@ const setPostDetail = (post) => ({
 })
 
 export const getPostsDetail = (postId) => async (dispatch) => {
-    console.log(postId)
+    console.log("CHEEEEGUEEEEEEEI!", postId)
+    // const id = localStorage.setItem("id", postId)
     try {
-        // const token = localStorage.getItem("token")
-        // // console.log(token)
-        // const response = await axios.get(`${baseUrl}/posts/${postId}`, {
-        //     headers: {
-        //         auth: token
-        //     }
-        // })
-        // dispatch(setPostDetail(response.data.post))
+        const token = localStorage.getItem("token")
+        const response = await axios.get(`${baseUrl}/posts/${postId}`, {
+            headers: {
+                auth: token
+            }
+        })
+        dispatch(setPostDetail(response.data.post))
+        dispatch(push(routes.detail))
     } catch (error) {
         console.error(error.message)
-        alert("Não foi possível acessar a lista de posts.")
+        alert("Não foi possível acessar os detalhes do post.")
     }
-
 }
 
 

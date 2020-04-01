@@ -55,3 +55,9 @@ export const TitleCreateComment = styled(Typography)`
   text-align:center;
   margin: 1rem;
 `
+
+export const Comments = styled(Typography)`
+  :hover{
+    cursor: pointer;
+  }
+`

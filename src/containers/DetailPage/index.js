@@ -2,15 +2,21 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { routes } from '../Router'
+import { getPostsDetail, vote } from '../../actions'
 
 import Appbar from "../../components/Appbar";
 
 import { TextField, CardContent, Typography, CardActions, IconButton } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { BoxCommentWrapper, ButtonStyled, CardPost, CommentHeader, DetailWrapper, FormCreateComment, PostFooter, PostHeader, VotesWrapper, TitleCreateComment } from './styles'
+import { BoxCommentWrapper, ButtonStyled, CardPost, CommentHeader, DetailWrapper, FormCreateComment, PostFooter, PostHeader, VotesWrapper, TitleCreateComment, Comments } from './styles'
 
 class DetailPage extends Component {
+
+
+  componentDidMount = () => {
+    // this.props.getPostsDetail()
+  }
 
   handleSubmission = (event) => {
     event.preventDefault()
@@ -21,37 +27,63 @@ class DetailPage extends Component {
     this.props.goToDetail()
   }
 
+  onclickUp = (postId, postVotesCount) => {
+    const thisDirection = Number(postVotesCount) + 1
+    // console.log("cliquei pra cima!", postId, thisDirection)
+    this.props.vote(postId, thisDirection)
+  }
+
+  onclickDown = (postId, postVotesCount) => {
+    const thisDirection = Number(postVotesCount) - 1
+    // console.log("cliquei pra baixo!", postId, thisDirection)
+    this.props.vote(postId, thisDirection)
+  }
+
+  onClickCommentUp = () => {
+
+  }
+  
+  onClickCommentDown = () => {
+
+  }
+
+  
   render() {
+    console.log(this.props.postDetail)
+    const { postDetail } = this.props
+
     return (
       <div>
         <Appbar page={"detail"} />
         <DetailWrapper>
 
           <CardPost>
-            <PostHeader title="Fulano" />
+            <PostHeader title={postDetail.title} />
 
             <CardContent>
               <Typography variant="body1" color="textSecondary" component="p">
-                Texto do post.
+                {postDetail.text}
               </Typography>
             </CardContent>
 
             <PostFooter>
-              <VotesWrapper>
-                <IconButton>
-                  <ArrowUpwardRounded color="primary" />
-                </IconButton>
-                <Typography>
-                  0
-                </Typography>
-                <IconButton>
-                  <ArrowDownwardRounded color="secondary" />
-                </IconButton>
-              </VotesWrapper>
-              <Typography>
-                0 comentários
-              </Typography>
-            </PostFooter>
+                  <VotesWrapper>
+                    <IconButton onClick={() => this.onclickUp(postDetail.id, postDetail.votesCount)}>
+                      <ArrowUpwardRounded color="primary" />
+                    </IconButton>
+                    <Typography>
+                      {postDetail.votesCount}
+                    </Typography>
+                    <IconButton onClick={() => this.onclickDown(postDetail.id, postDetail.votesCount)}>
+                      <ArrowDownwardRounded color="secondary" />
+                    </IconButton>
+                  </VotesWrapper>
+
+                  <Comments>
+                    {postDetail.commentsNumber} comentários
+                  </Comments>
+                </PostFooter>
+
           </CardPost>
 
 
@@ -78,24 +110,24 @@ class DetailPage extends Component {
           </BoxCommentWrapper>
 
           {
-            [1, 2, 3].map(item => (
-              <CardPost key={item}>
-                <CommentHeader subheader="Beltrano" />
+            postDetail.comments.map(comment => (
+              <CardPost key={comment.id}>
+                <CommentHeader subheader={comment.username} />
 
                 <CardContent>
                   <Typography variant="body2" color="textSecondary" component="p">
-                    Texto do comentário.
+                    {comment.text}
                     </Typography>
                 </CardContent>
 
                 <CardActions>
-                  <IconButton>
+                  <IconButton onClick={() => this.onClickCommentUp()}>
                     <ArrowUpwardRounded color="primary" />
                   </IconButton>
                   <Typography>
-                    0 
+                    {comment.votesCount}
                   </Typography>
-                  <IconButton>
+                  <IconButton onClick={() => this.onClickCommentDown()}>
                     <ArrowDownwardRounded color="secondary" />
                   </IconButton>
                 </CardActions>
@@ -109,11 +141,19 @@ class DetailPage extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    goToLogin: () => dispatch(push(routes.root)),
-    goToDetail: () => dispatch(push(routes.detail))
+const mapStateToProps = (state) => {
+  return{
+    postDetail: state.posts.postDetail,
   }
 }
 
-export default connect(null, mapDispatchToProps)(DetailPage);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    goToLogin: () => dispatch(push(routes.root)),
+    goToDetail: () => dispatch(push(routes.detail)),
+    getPostsDetail: () => dispatch(getPostsDetail()),
+    vote: (id, direction) => dispatch(vote(id, direction))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailPage);
