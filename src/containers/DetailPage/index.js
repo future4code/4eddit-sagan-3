@@ -8,7 +8,7 @@ import Appbar from "../../components/Appbar";
 import { TextField, CardContent, Typography, CardActions, IconButton } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { BoxCommentWrapper, ButtonStyled, CardPost, CommentHeader, DetailWrapper, FormCreateComment, PostFooter, PostHeader, VotesWrapper } from './styles'
+import { BoxCommentWrapper, ButtonStyled, CardPost, CommentHeader, DetailWrapper, FormCreateComment, PostFooter, PostHeader, VotesWrapper, TitleCreateComment } from './styles'
 
 class DetailPage extends Component {
 
@@ -59,6 +59,11 @@ class DetailPage extends Component {
             <FormCreateComment
               autoComplete="off"
               onSubmit={this.handleSubmission}>
+
+                <TitleCreateComment variant="h6" component="p">
+                  Criar Comentário
+                </TitleCreateComment>
+
               <TextField id="comment" label="Escreva seu comentário" variant="outlined" multiline rows={2}
               type="text"
               required

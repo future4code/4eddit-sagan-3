@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { routes } from '../Router'
-import { getPosts, createPost } from '../../actions'
+import { getPosts, createPost, vote } from '../../actions'
 
 import Appbar from "../../components/Appbar";
 
 import { TextField, CardContent, Typography, CardActionArea, IconButton } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { BoxPostWrapper, ButtonStyled, CardPost, Comments, FeedWrapper, FormCreatePost, PostFooter, PostHeader, VotesWrapper } from './styles'
+import { BoxPostWrapper, ButtonStyled, CardPost, Comments, FeedWrapper, FormCreatePost, PostFooter, PostHeader, VotesWrapper, TitleCreatePost } from './styles'
 
 class FeedPage extends Component {
   constructor(props) {
@@ -34,7 +34,7 @@ class FeedPage extends Component {
   }
 
   handlePostClicked = (postId) => {
-    // this.props.goToDetail()
+    this.props.goToDetail()
     console.log(postId)
   }
 
@@ -47,11 +47,29 @@ class FeedPage extends Component {
     })
   }
 
+    onclickUp = (postId, postVotesCount) => {
+      const thisDirection = Number(postVotesCount) + 1
+      // console.log("cliquei pra cima!", postId, thisDirection)
+      this.props.vote(postId, thisDirection)
+    }
+
+    onclickDown = (postId, postVotesCount) => {
+      const thisDirection = Number(postVotesCount) - 1
+      // console.log("cliquei pra baixo!", postId, thisDirection)
+      this.props.vote(postId, thisDirection)
+    }
 
   render() {
     const { allPosts } = this.props
     // console.log(allPosts)
     // console.log(this.state.createPostData)
+
+    const newAllPosts = allPosts
+    const ordenedPosts = newAllPosts.sort((a, b) => {
+      return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0 
+    }) 
+    // console.log(ordenedPosts)
+    
     return (
       <>
         <Appbar page={"feed"} />
@@ -59,9 +77,14 @@ class FeedPage extends Component {
         <FeedWrapper>
 
           <BoxPostWrapper>
+            
             <FormCreatePost
               autoComplete="on"
               onSubmit={this.handleSubmission}>
+
+                <TitleCreatePost variant="h4" component="p">
+                  Criar Publicação
+                </TitleCreatePost>
 
               <TextField id="post" label="Título" variant="outlined"
                 type="text"
@@ -94,7 +117,7 @@ class FeedPage extends Component {
           </BoxPostWrapper>
 
           {
-            allPosts.map(post => (
+            ordenedPosts.map(post => (
               <CardPost key={post.id}>
 
                 <CardActionArea onClick={() => this.handlePostClicked(post.id)}>
@@ -111,13 +134,13 @@ class FeedPage extends Component {
 
                 <PostFooter>
                   <VotesWrapper>
-                    <IconButton>
+                    <IconButton onClick={() => this.onclickUp(post.id, post.votesCount)}>
                       <ArrowUpwardRounded color="primary" />
                     </IconButton>
                     <Typography>
                       {post.votesCount}
                     </Typography>
-                    <IconButton>
+                    <IconButton onClick={() => this.onclickDown(post.id, post.votesCount)}>
                       <ArrowDownwardRounded color="secondary" />
                     </IconButton>
                   </VotesWrapper>
@@ -145,7 +168,8 @@ const mapDispatchToProps = (dispatch) => {
     goToLogin: () => dispatch(push(routes.root)),
     goToDetail: () => dispatch(push(routes.detail)),
     getPosts: () => dispatch(getPosts()),
-    createPost: (createPostData) => dispatch(createPost(createPostData))
+    createPost: (createPostData) => dispatch(createPost(createPostData)),
+    vote: (id, direction) => dispatch(vote(id, direction))
   }
 }
 
