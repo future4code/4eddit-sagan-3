@@ -19,7 +19,7 @@ class RegisterPage extends Component {
   handleSubmission = (event) => {
     event.preventDefault()
     this.props.signup(this.state.registerData)
-    this.setState ({
+    this.setState({
       registerData: {
         [event.target.name]: ""
       }
@@ -36,32 +36,31 @@ class RegisterPage extends Component {
   }
 
   render() {
-    // console.log(this.state.registerData)
     return (
       <>
         <Appbar page={'register'} />
-        
+
         <RegisterWrapper>
           <h1>Cadastrar</h1>
 
           <FormRegister
             autoComplete="on"
-            onSubmit={this.handleSubmission}> 
+            onSubmit={this.handleSubmission}>
 
             <TextField
               id="nome-do-usuario" label="Nome do Usuário" variant="outlined" margin="normal"
               type="text"
               required
               inputProps={{
-                pattern: "[a-z]{3,}",
-                title: "O campo Nome do Usuário  deve ter no mínimo 3 letras minúsculas, sem espaço.",
+                pattern: "[A-Za-z ]{3,}",
+                title: "O campo Nome do Usuário deve ter no mínimo 3 letras.",
               }}
               name="username"
               value={this.state.registerData.username || ""}
               onChange={this.handleTextFieldChange}
             />
 
-            <TextField 
+            <TextField
               id="email" label="E-mail" variant="outlined" margin="normal"
               type="email"
               required
@@ -70,13 +69,13 @@ class RegisterPage extends Component {
               onChange={this.handleTextFieldChange}
             />
 
-            <TextField 
+            <TextField
               id="senha" label="Senha" variant="outlined" margin="normal"
               type="password"
               required
               inputProps={{
-                pattern: "[A-Za-z0-9]{5,}", 
-                title:"O campo Senha deve ter no mínimo 5 letras ou números, sem espaço.",
+                pattern: "[A-Za-z0-9]{5,}",
+                title: "O campo Senha deve ter no mínimo 5 letras ou números, sem espaço.",
               }}
               name="password"
               value={this.state.registerData.password || ""}
@@ -87,7 +86,7 @@ class RegisterPage extends Component {
               Cadastrar
             </ButtonStyled>
           </FormRegister>
-          
+
         </RegisterWrapper>
 
       </>
@@ -97,7 +96,7 @@ class RegisterPage extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signup:(registerData) => dispatch(signup(registerData))
+    signup: (registerData) => dispatch(signup(registerData))
   }
 }
 

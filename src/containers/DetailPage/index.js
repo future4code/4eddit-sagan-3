@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { push } from "connected-react-router";
-import { routes } from '../Router'
-import { getPostsDetail, vote, voteInDetail, createComment, voteComment } from '../../actions'
+import { voteInDetail, createComment, voteComment } from '../../actions'
 
 import Appbar from "../../components/Appbar";
 
@@ -19,11 +17,6 @@ class DetailPage extends Component {
     }
   }
 
-  componentDidMount = () => {
-    // this.props.getPostsDetail()
-    // const id = localStorage.setItem("id", this.props.postId)
-    // const post = localStorage.setItem("post", JSON.stringify(this.props.postDetail))
-  }
 
   handleSubmission = (event) => {
     event.preventDefault()
@@ -37,29 +30,23 @@ class DetailPage extends Component {
     this.props.goToDetail()
   }
 
-  onclickUp = (postId, postVotesCount) => {
+  onclickUp = () => {
     const thisDirection = + 1
-    // console.log("cliquei pra cima!", postId, thisDirection)
     this.props.voteInDetail(this.props.postId, thisDirection)
-    // const post = localStorage.getItem("post")
-    // this.props.getPostsDetail(JSON.parse(post))
   }
 
-  onclickDown = (postId, postVotesCount) => {
+  onclickDown = () => {
     const thisDirection = - 1
-    // console.log("cliquei pra baixo!", postId, thisDirection)
     this.props.voteInDetail(this.props.postId, thisDirection)
-    // const post = localStorage.getItem("post")
-    // this.props.getPostsDetail(JSON.parse(post))
   }
 
-  onClickCommentUp = (commentId, commentVotesCount) => {
-    const thisDirection = Number(commentVotesCount) + 1
+  onClickCommentUp = (commentId) => {
+    const thisDirection = + 1
     this.props.voteComment(this.props.postId, commentId, thisDirection)
   }
 
-  onClickCommentDown = (commentId, commentVotesCount) => {
-    const thisDirection = Number(commentVotesCount) - 1
+  onClickCommentDown = (commentId) => {
+    const thisDirection = - 1
     this.props.voteComment(this.props.postId, commentId, thisDirection)
   }
 
@@ -70,12 +57,13 @@ class DetailPage extends Component {
   }
 
   render() {
-    // console.log(this.props.postDetail)
-    // console.log(this.state.commentText)
-    const { postDetail, postId } = this.props
+    const { postDetail} = this.props
 
-    // console.log(postDetail)
-    // console.log(postId)
+    const newComments = [...postDetail.comments]
+    const ordenedComments = newComments.sort((a, b) => {
+      return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0
+    })
+
 
     return (
       <div>
@@ -138,7 +126,7 @@ class DetailPage extends Component {
             </BoxCommentWrapper>
 
             {
-              postDetail.comments.map(comment => (
+              ordenedComments.map(comment => (
                 <CardPost key={comment.id}>
                   <CommentHeader subheader={comment.username} />
 
@@ -149,13 +137,13 @@ class DetailPage extends Component {
                   </CardContent>
 
                   <CardActions>
-                    <IconButton onClick={() => this.onClickCommentUp(comment.id, comment.votesCount)}> 
+                    <IconButton onClick={() => this.onClickCommentUp(comment.id)}>
                       <ArrowUpwardRounded color="primary" />
                     </IconButton>
                     <Typography>
                       {comment.votesCount}
                     </Typography>
-                    <IconButton onClick={() => this.onClickCommentDown(comment.id, comment.votesCount)}>
+                    <IconButton onClick={() => this.onClickCommentDown(comment.id)}>
                       <ArrowDownwardRounded color="secondary" />
                     </IconButton>
                   </CardActions>
@@ -181,10 +169,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    goToLogin: () => dispatch(push(routes.root)),
-    goToDetail: () => dispatch(push(routes.detail)),
-    getPostsDetail: () => dispatch(getPostsDetail()),
-    vote: (id, direction) => dispatch(vote(id, direction)),
     createComment: (createCommentData, postId) => dispatch(createComment(createCommentData, postId)),
     voteComment: (postId, commentId, direction) => dispatch(voteComment(postId, commentId, direction)),
     voteInDetail: (id, direction) => dispatch(voteInDetail(id, direction)),

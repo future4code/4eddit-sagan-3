@@ -33,11 +33,11 @@ class LoginPage extends Component {
   }
 
   render() {
-    // console.log(this.state.loginData)
     const { goToRegister } = this.props
 
-    const token = localStorage.getItem('token') // vamos setar ele no login
-    const username = localStorage.getItem('username')
+    const token = localStorage.getItem('token')
+    const user = localStorage.getItem('user')
+    const newUser = JSON.parse(user)
 
     return (
       <>
@@ -50,7 +50,7 @@ class LoginPage extends Component {
           {token ?
 
             <Typography variant="h4" color="textSecondary" component="p">
-              Bem vindx {username}
+              Bem vindx, {newUser.username}
             </Typography>
 
             :

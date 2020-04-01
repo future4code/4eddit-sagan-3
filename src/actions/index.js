@@ -23,10 +23,8 @@ export const signup = (registerData) => async (dispatch) => {
 }
 
 export const login = (loginData) => async (dispatch) => {
-    // console.log("chegou!", loginData)
     try {
         const response = await axios.post(`${baseUrl}/login`, loginData)
-        // console.log(response.data)
         const token = response.data.token
         const user = response.data.user
         localStorage.setItem("token", token)
@@ -50,7 +48,6 @@ export const getPosts = () => async (dispatch) => {
 
     try {
         const token = localStorage.getItem("token")
-        // console.log(token)
         const response = await axios.get(`${baseUrl}/posts`, {
             headers: {
                 auth: token
@@ -65,15 +62,12 @@ export const getPosts = () => async (dispatch) => {
 }
 
 export const createPost = (createPostData) => async (dispatch) => {
-    // console.log(createPostData)
     const newData = {
         text: createPostData.text,
         title: createPostData.title
     }
-    // console.log(newData)
     try {
         const token = localStorage.getItem("token")
-        // console.log(token)
         await axios.post(`${baseUrl}/posts`,
             newData,
             {
@@ -129,9 +123,9 @@ export const voteInDetail = (id, direction) => async (dispatch, getState) => {
                 }
             }
         )
-        
-            dispatch(getPostsDetail(id))
-        
+
+        dispatch(getPostsDetail(id))
+
 
     } catch (error) {
         console.error(error.message)
@@ -156,13 +150,11 @@ const setPostId = (id) => ({
 })
 
 export const getPostId = (postId) => async (dispatch) => {
-    // console.log(postId)
     dispatch(setPostId(postId))
 }
 
 
 export const getPostsDetail = (postId) => async (dispatch) => {
-    // console.log("CHEEEEGUEEEEEEEI!", postId)
     try {
         const token = localStorage.getItem("token")
         const response = await axios.get(`${baseUrl}/posts/${postId}`, {
@@ -172,7 +164,6 @@ export const getPostsDetail = (postId) => async (dispatch) => {
         })
         dispatch(setPostDetail(response.data.post))
         dispatch(push(routes.detail))
-        // dispatch(setPostId(postId))
     } catch (error) {
         console.error(error.message)
         alert("Não foi possível acessar os detalhes do post.")
@@ -192,7 +183,6 @@ export const createComment = (createCommentData, postId) => async (dispatch) => 
                 }
             }
         )
-        alert("Comentário cadastrado com sucesso!") // apagar isso!
         dispatch(getPostsDetail(postId))
 
     } catch (error) {
@@ -206,17 +196,17 @@ export const voteComment = (postId, commentId, direction) => async (dispatch) =>
     const token = localStorage.getItem("token")
 
     try {
-    //     await axios.put(`${baseUrl}/posts/${id}/vote`,
-    //         { direction: direction },
-    //         {
-    //             headers: {
-    //                 auth: token
-    //             }
-    //         }
-    //     )
-    //         dispatch(getPosts())
+        await axios.put(`${baseUrl}/posts/${postId}/comment/${commentId}/vote`,
+            { direction: direction },
+            {
+                headers: {
+                    auth: token
+                }
+            }
+        )
+        dispatch(getPostsDetail(postId))
     } catch (error) {
         console.error(error.message)
-        alert("Não foi possível votar no post.")
+        alert("Não foi possível votar no comentário.")
     }
 }
