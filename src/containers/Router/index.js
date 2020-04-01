@@ -1,6 +1,7 @@
 import React from "react";
 import { ConnectedRouter } from "connected-react-router";
 import { Switch, Route } from "react-router-dom";
+import { ProtectedRoute } from '../../components/ProtectedRoute'
 
 import LoginPage from "../LoginPage";
 import RegisterPage from "../RegisterPage";
@@ -20,8 +21,10 @@ function Router(props) {
       <Switch>
         <Route exact path={routes.root} component={LoginPage} />
         <Route exact path={routes.register} component={RegisterPage} />
-        <Route exact path={routes.feed} component={FeedPage} />
-        <Route exact path={routes.detail} component={DetailPage} />
+
+        <ProtectedRoute exact path={routes.feed} component={FeedPage} />
+        <ProtectedRoute exact path={routes.detail} component={DetailPage} />
+        
         <Route path="*" component={() => "Página não encontrada"} />
       </Switch>
     </ConnectedRouter>

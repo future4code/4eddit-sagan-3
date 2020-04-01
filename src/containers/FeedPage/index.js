@@ -138,7 +138,7 @@ class FeedPage extends Component {
                     </IconButton>
                   </VotesWrapper>
 
-                  <Comments onClick={this.handlePostClicked}>
+                  <Comments onClick={() => this.handlePostClicked(post.id)}>
                     {post.commentsNumber} comentários
                   </Comments>
                 </PostFooter>

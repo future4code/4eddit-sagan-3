@@ -46,7 +46,12 @@ class Appbar extends Component {
       case "login":
         if (token !== null) {
           buttonsPersonalized =
-            <Button onClick={goToFeed} color="inherit">Feed</Button>
+            <div>
+              <Button onClick={goToFeed} color="inherit">Feed</Button>
+              <IconButton color="inherit" onClick={this.logout}>
+                <PowerSettingsNewRounded />
+              </IconButton>
+            </div>
         }
         break;
 
