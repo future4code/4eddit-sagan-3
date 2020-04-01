@@ -49,7 +49,7 @@ class LoginPage extends Component {
 
           {token ?
 
-            <Typography variant="h4" color="textSecondary" component="p">
+            <Typography variant="h5" color="textSecondary" component="p">
               Bem vindx, {newUser.username}
             </Typography>
 

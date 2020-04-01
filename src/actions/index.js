@@ -85,7 +85,6 @@ export const createPost = (createPostData) => async (dispatch) => {
 }
 
 export const vote = (id, direction) => async (dispatch, getState) => {
-    console.log(id, direction)
     const token = localStorage.getItem("token")
 
     try {
@@ -111,7 +110,6 @@ export const vote = (id, direction) => async (dispatch, getState) => {
 
 
 export const voteInDetail = (id, direction) => async (dispatch, getState) => {
-    console.log(id, direction)
     const token = localStorage.getItem("token")
 
     try {
@@ -172,7 +170,6 @@ export const getPostsDetail = (postId) => async (dispatch) => {
 
 
 export const createComment = (createCommentData, postId) => async (dispatch) => {
-    console.log(createCommentData, postId)
     try {
         const token = localStorage.getItem("token")
         await axios.post(`${baseUrl}/posts/${postId}/comment`,
@@ -192,7 +189,6 @@ export const createComment = (createCommentData, postId) => async (dispatch) => 
 }
 
 export const voteComment = (postId, commentId, direction) => async (dispatch) => {
-    console.log(postId, commentId, direction)
     const token = localStorage.getItem("token")
 
     try {
