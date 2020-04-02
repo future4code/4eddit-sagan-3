@@ -7,7 +7,7 @@ import Appbar from "../../components/Appbar";
 import { TextField, CardContent, Typography, CardActionArea, IconButton } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { BoxPostWrapper, ButtonStyled, CardPost, Comments, FeedWrapper, FormCreatePost, PostFooter, PostHeader, VotesWrapper, TitleCreatePost } from './styles'
+import { BoxPostWrapper, ButtonStyled, CardPost, Comments, FeedWrapper, FormCreatePost, PostFooter, PostHeader, VotesWrapper, TitleCreatePost, LoadingWrapper, Image } from './styles'
 
 class FeedPage extends Component {
   constructor(props) {
@@ -55,6 +55,11 @@ class FeedPage extends Component {
     this.props.vote(postId, thisDirection)
   }
 
+  onClickClearVote = (postId) => {
+    const thisDirection = 0
+    this.props.vote(postId, thisDirection)
+  }
+
   render() {
     const { allPosts } = this.props
 
@@ -62,6 +67,9 @@ class FeedPage extends Component {
     const ordenedPosts = newAllPosts.sort((a, b) => {
       return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0
     })
+
+    // const user = localStorage.getItem('user')
+    // const newUser = JSON.parse(user)
 
     return (
       <>
@@ -109,43 +117,77 @@ class FeedPage extends Component {
             </FormCreatePost>
           </BoxPostWrapper>
 
-          {
-            ordenedPosts.map(post => (
-              <CardPost key={post.id}>
+          {ordenedPosts.length > 0 ?
 
-                <CardActionArea onClick={() => this.handlePostClicked(post.id)}>
-                  <PostHeader title={post.username} />
-                  <CardContent>
-                    <Typography variant="h6" component="p">
-                      {post.title}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" component="p">
-                      {post.text}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
+            ordenedPosts
+              // .filter(post => post.username === newUser.username)
+              .map(post => (
+                <CardPost key={post.id}>
 
-                <PostFooter>
-                  <VotesWrapper>
-                    <IconButton onClick={() => this.onclickUp(post.id)}>
-                      <ArrowUpwardRounded color="primary" />
-                    </IconButton>
-                    <Typography>
-                      {post.votesCount}
-                    </Typography>
-                    <IconButton onClick={() => this.onclickDown(post.id)}>
-                      <ArrowDownwardRounded color="secondary" />
-                    </IconButton>
-                  </VotesWrapper>
+                  <CardActionArea onClick={() => this.handlePostClicked(post.id)}>
+                    <PostHeader title={post.username} />
+                    <CardContent>
+                      <Typography variant="h6" component="p">
+                        {post.title}
+                      </Typography>
+                      {/* Fazendo uma brincadeirinha no front - sabemos que só vai funcionar no nosso site ;) */}
+                      {post.text.includes('.jpeg') || post.text.includes('.png') || post.text.includes('.gif') ?
+                        <Image src={post.text} />
+                        :
+                        <Typography variant="body1" color="textSecondary" component="p">
+                          {post.text}
+                        </Typography>
+                      }
+                    </CardContent>
+                  </CardActionArea>
 
-                  <Comments onClick={() => this.handlePostClicked(post.id)}>
-                    {post.commentsNumber} comentários
-                  </Comments>
-                </PostFooter>
+                  <PostFooter>
+                    <VotesWrapper>
 
-              </CardPost>
-            ))
+                      {post.userVoteDirection === 1 ?
+                        <IconButton onClick={() => this.onClickClearVote(post.id)}>
+                          <ArrowUpwardRounded />
+                        </IconButton>
+                        :
+                        <IconButton onClick={() => this.onclickUp(post.id)}>
+                          <ArrowUpwardRounded color="primary" />
+                        </IconButton>
+                      }
+
+                      <Typography>
+                        {post.votesCount}
+                      </Typography>
+
+                      {post.userVoteDirection === -1 ?
+                        <IconButton onClick={() => this.onClickClearVote(post.id)}>
+                          <ArrowDownwardRounded />
+                        </IconButton>
+                        :
+                        <IconButton onClick={() => this.onclickDown(post.id)}>
+                          <ArrowDownwardRounded color="secondary" />
+                        </IconButton>
+                      }
+
+                    </VotesWrapper>
+
+                    <Comments onClick={() => this.handlePostClicked(post.id)}>
+                      {post.commentsNumber} {post.commentsNumber === 1 ? 'comentário' : 'comentários'}
+                    </Comments>
+                  </PostFooter>
+
+                </CardPost>
+              ))
+
+            :
+
+            <LoadingWrapper>
+              <Typography component="p" variant="h6" color="inherit">
+                Carregando...
+              </Typography>
+            </LoadingWrapper>
+
           }
+
         </FeedWrapper>
       </>
     );
