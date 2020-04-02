@@ -7,7 +7,7 @@ import Appbar from "../../components/Appbar";
 import { TextField, CardContent, Typography, CardActionArea, IconButton } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { BoxPostWrapper, ButtonStyled, CardPost, Comments, FeedWrapper, FormCreatePost, PostFooter, PostHeader, VotesWrapper, TitleCreatePost } from './styles'
+import { BoxPostWrapper, ButtonStyled, CardPost, Comments, FeedWrapper, FormCreatePost, PostFooter, PostHeader, VotesWrapper, TitleCreatePost, LoadingWrapper } from './styles'
 
 class FeedPage extends Component {
   constructor(props) {
@@ -62,6 +62,7 @@ class FeedPage extends Component {
     const ordenedPosts = newAllPosts.sort((a, b) => {
       return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0
     })
+    // console.log(ordenedPosts)
 
     return (
       <>
@@ -109,7 +110,8 @@ class FeedPage extends Component {
             </FormCreatePost>
           </BoxPostWrapper>
 
-          {
+          { ordenedPosts.length > 0 ? 
+
             ordenedPosts.map(post => (
               <CardPost key={post.id}>
 
@@ -145,7 +147,17 @@ class FeedPage extends Component {
 
               </CardPost>
             ))
+
+            :
+
+            <LoadingWrapper>
+              <Typography component="p" variant="h6" color="inherit">
+                Carregando...
+              </Typography>
+            </LoadingWrapper>
+            
           }
+
         </FeedWrapper>
       </>
     );

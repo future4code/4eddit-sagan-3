@@ -76,7 +76,7 @@ export const createPost = (createPostData) => async (dispatch) => {
                 }
             }
         )
-        alert("Post cadastrado com sucesso!")
+        // alert("Post cadastrado com sucesso!")
         dispatch(getPosts())
     } catch (error) {
         console.error(error.message)

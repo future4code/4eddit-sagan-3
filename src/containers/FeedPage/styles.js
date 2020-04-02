@@ -56,3 +56,8 @@ export const TitleCreatePost = styled(Typography)`
   text-align:center;
   margin: 1rem;
 `
+
+export const LoadingWrapper = styled.div`
+  text-align: center;
+  margin-top: 1rem;
+`

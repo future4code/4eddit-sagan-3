@@ -61,3 +61,8 @@ export const Comments = styled(Typography)`
     cursor: pointer;
   }
 `
+
+export const LoadingWrapper = styled.div`
+  text-align: center;
+  margin-top: 1rem;
+`

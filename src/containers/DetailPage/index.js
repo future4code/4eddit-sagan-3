@@ -7,7 +7,7 @@ import Appbar from "../../components/Appbar";
 import { TextField, CardContent, Typography, CardActions, IconButton } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { BoxCommentWrapper, ButtonStyled, CardPost, CommentHeader, DetailWrapper, FormCreateComment, PostFooter, PostHeader, VotesWrapper, TitleCreateComment, Comments } from './styles'
+import { BoxCommentWrapper, ButtonStyled, CardPost, CommentHeader, DetailWrapper, FormCreateComment, PostFooter, PostHeader, VotesWrapper, TitleCreateComment, Comments, LoadingWrapper } from './styles'
 
 class DetailPage extends Component {
   constructor(props) {
@@ -16,7 +16,6 @@ class DetailPage extends Component {
       commentText: ""
     }
   }
-
 
   handleSubmission = (event) => {
     event.preventDefault()
@@ -57,18 +56,22 @@ class DetailPage extends Component {
   }
 
   render() {
-    const { postDetail} = this.props
+    const { postDetail } = this.props
 
-    const newComments = [...postDetail.comments]
+    let newComments = []
+    if (postDetail !== null) { // null - pessoa logada, acessa a rota diretamente
+      newComments = [...postDetail.comments]
+    }
     const ordenedComments = newComments.sort((a, b) => {
       return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0
     })
 
-
     return (
       <div>
         <Appbar page={"detail"} />
+
         {postDetail ?
+
           <DetailWrapper>
 
             <CardPost>
@@ -125,7 +128,8 @@ class DetailPage extends Component {
               </FormCreateComment>
             </BoxCommentWrapper>
 
-            {
+            {ordenedComments ?
+
               ordenedComments.map(comment => (
                 <CardPost key={comment.id}>
                   <CommentHeader subheader={comment.username} />
@@ -149,12 +153,29 @@ class DetailPage extends Component {
                   </CardActions>
                 </CardPost>
               ))
+
+              :
+
+              <LoadingWrapper>
+                <Typography component="p" variant="h6" color="inherit">
+                  Carregando...
+                </Typography>
+              </LoadingWrapper>
+
             }
 
           </DetailWrapper>
+
           :
-          <DetailWrapper>carregando ...</DetailWrapper>
+
+          <DetailWrapper>
+            <Typography component="p" variant="h6" color="inherit">
+              <strong>ERRO:</strong> retorne ao FEED para selecionar um post!
+            </Typography>
+          </DetailWrapper>
+
         }
+
       </div>
     );
   }
