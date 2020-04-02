@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { signup } from '../../actions'
+import { loginForm } from './constants'
 
 import Appbar from "../../components/Appbar";
 
@@ -36,6 +37,9 @@ class RegisterPage extends Component {
   }
 
   render() {
+
+    // console.log(this.state.registerData)
+
     return (
       <>
         <Appbar page={'register'} />
@@ -47,40 +51,24 @@ class RegisterPage extends Component {
             autoComplete="on"
             onSubmit={this.handleSubmission}>
 
-            <TextField
-              id="nome-do-usuario" label="Nome do Usuário" variant="outlined" margin="normal"
-              type="text"
-              required
-              inputProps={{
-                pattern: "[A-Za-z ]{3,}",
-                title: "O campo Nome do Usuário deve ter no mínimo 3 letras.",
-              }}
-              name="username"
-              value={this.state.registerData.username || ""}
-              onChange={this.handleTextFieldChange}
-            />
 
-            <TextField
-              id="email" label="E-mail" variant="outlined" margin="normal"
-              type="email"
-              required
-              name="email"
-              value={this.state.registerData.email || ""}
-              onChange={this.handleTextFieldChange}
-            />
-
-            <TextField
-              id="senha" label="Senha" variant="outlined" margin="normal"
-              type="password"
-              required
-              inputProps={{
-                pattern: "[A-Za-z0-9]{5,}",
-                title: "O campo Senha deve ter no mínimo 5 letras ou números, sem espaço.",
-              }}
-              name="password"
-              value={this.state.registerData.password || ""}
-              onChange={this.handleTextFieldChange}
-            />
+            {loginForm.map(field => (
+              <TextField
+                label={field.label}
+                key={field.name}
+                variant="outlined" margin="normal"
+                name={field.name}
+                type={field.type}
+                value={this.state.registerData[field.name] || ""}
+                id={field.name}
+                required={field.required}
+                onChange={this.handleTextFieldChange}
+                inputProps={{
+                  pattern: field.pattern,
+                  title: field.title
+                }}
+              />
+            ))}
 
             <ButtonStyled type="submit" color="primary" variant="contained">
               Cadastrar
