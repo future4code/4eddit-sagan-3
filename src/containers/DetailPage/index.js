@@ -7,7 +7,7 @@ import Appbar from "../../components/Appbar";
 import { TextField, CardContent, Typography, CardActions, IconButton } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { BoxCommentWrapper, ButtonStyled, CardPost, CommentHeader, DetailWrapper, FormCreateComment, PostFooter, PostHeader, VotesWrapper, TitleCreateComment, LoadingWrapper } from './styles'
+import { BoxCommentWrapper, ButtonStyled, CardPost, CommentHeader, DetailWrapper, FormCreateComment, PostFooter, PostHeader, VotesWrapper, TitleCreateComment, LoadingWrapper, Image } from './styles'
 
 
 class DetailPage extends Component {
@@ -40,6 +40,12 @@ class DetailPage extends Component {
     this.props.voteInDetail(this.props.postId, thisDirection)
   }
 
+  onClickClearVote = () => {
+    const thisDirection = 0
+    this.props.voteInDetail(this.props.postId, thisDirection)
+  }
+
+
   onClickCommentUp = (commentId) => {
     const thisDirection = + 1
     this.props.voteComment(this.props.postId, commentId, thisDirection)
@@ -49,6 +55,12 @@ class DetailPage extends Component {
     const thisDirection = - 1
     this.props.voteComment(this.props.postId, commentId, thisDirection)
   }
+
+  onClickClearVoteComment = (commentId) => {
+    const thisDirection = 0
+    this.props.voteComment(this.props.postId, commentId, thisDirection)
+  }
+
 
   handleTextFieldChange = (event) => {
     this.setState({
@@ -67,6 +79,8 @@ class DetailPage extends Component {
       return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0
     })
 
+    console.log(ordenedComments)
+
     return (
       <div>
         <Appbar page={"detail"} />
@@ -82,22 +96,42 @@ class DetailPage extends Component {
                 <Typography variant="h6" component="p">
                   {postDetail.title}
                 </Typography>
-                <Typography variant="body1" color="textSecondary" component="p">
-                  {postDetail.text}
-                </Typography>
+                {postDetail.text.includes('.jpeg') || postDetail.text.includes('.png') || postDetail.text.includes('.gif') ?
+                  <Image src={postDetail.text} />
+                  :
+                  <Typography variant="body1" color="textSecondary" component="p">
+                    {postDetail.text}
+                  </Typography>
+                }
               </CardContent>
 
               <PostFooter>
                 <VotesWrapper>
-                  <IconButton onClick={this.onclickUp}>
-                    <ArrowUpwardRounded color="primary" />
-                  </IconButton>
+
+                  {postDetail.userVoteDirection === 1 ?
+                    <IconButton onClick={this.onClickClearVote}>
+                      <ArrowUpwardRounded />
+                    </IconButton>
+                    :
+                    <IconButton onClick={this.onclickUp}>
+                      <ArrowUpwardRounded color="primary" />
+                    </IconButton>
+                  }
+
                   <Typography>
                     {postDetail.votesCount}
                   </Typography>
-                  <IconButton onClick={this.onclickDown}>
-                    <ArrowDownwardRounded color="secondary" />
-                  </IconButton>
+
+                  {postDetail.userVoteDirection === -1 ?
+                    <IconButton onClick={this.onClickClearVote}>
+                      <ArrowDownwardRounded />
+                    </IconButton>
+                    :
+                    <IconButton onClick={this.onclickDown}>
+                      <ArrowDownwardRounded color="secondary" />
+                    </IconButton>
+                  }
+
                 </VotesWrapper>
 
                 <Typography>
@@ -145,15 +179,32 @@ class DetailPage extends Component {
                   </CardContent>
 
                   <CardActions>
-                    <IconButton onClick={() => this.onClickCommentUp(comment.id)}>
-                      <ArrowUpwardRounded color="primary" />
-                    </IconButton>
+
+                    {comment.userVoteDirection === 1 ?
+                      <IconButton onClick={() => this.onClickClearVoteComment(comment.id)}>
+                        <ArrowUpwardRounded />
+                      </IconButton>
+                      :
+                      <IconButton onClick={() => this.onClickCommentUp(comment.id)}>
+                        <ArrowUpwardRounded color="primary" />
+                      </IconButton>
+
+                    }
+
                     <Typography>
                       {comment.votesCount}
                     </Typography>
-                    <IconButton onClick={() => this.onClickCommentDown(comment.id)}>
-                      <ArrowDownwardRounded color="secondary" />
-                    </IconButton>
+
+                    {comment.userVoteDirection === -1 ?
+                      <IconButton onClick={() => this.onClickClearVoteComment(comment.id)}>
+                        <ArrowDownwardRounded />
+                      </IconButton>
+                      :
+                      <IconButton onClick={() => this.onClickCommentDown(comment.id)}>
+                        <ArrowDownwardRounded color="secondary" />
+                      </IconButton>
+                    }
+
                   </CardActions>
                 </CardPost>
               ))
