@@ -62,7 +62,9 @@ class FeedPage extends Component {
     const ordenedPosts = newAllPosts.sort((a, b) => {
       return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0
     })
-    // console.log(ordenedPosts)
+
+    // const user = localStorage.getItem('user')
+    // const newUser = JSON.parse(user)
 
     return (
       <>
@@ -112,7 +114,9 @@ class FeedPage extends Component {
 
           { ordenedPosts.length > 0 ? 
 
-            ordenedPosts.map(post => (
+            ordenedPosts
+            // .filter(post => post.username === newUser.username)
+            .map(post => (
               <CardPost key={post.id}>
 
                 <CardActionArea onClick={() => this.handlePostClicked(post.id)}>
