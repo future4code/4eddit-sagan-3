@@ -3,17 +3,19 @@ import { connect } from "react-redux";
 import { getPosts, createPost, vote, getPostsDetail, getPostId } from '../../actions'
 
 import Appbar from "../../components/Appbar";
+import Loading from '../../components/Loading/'
 
-import { TextField, CardContent, Typography, CardActionArea, IconButton } from "@material-ui/core";
+import { TextField, CardContent, Typography, CardActionArea, IconButton  } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { BoxPostWrapper, ButtonStyled, CardPost, Comments, FeedWrapper, FormCreatePost, PostFooter, PostHeader, VotesWrapper, TitleCreatePost, LoadingWrapper, Image } from './styles'
+import { BoxPostWrapper, ButtonStyled, CardPost, Comments, FeedWrapper, FormCreatePost, PostFooter, PostHeader, VotesWrapper, TitleCreatePost, Image } from './styles'
 
 class FeedPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      createPostData: {}
+      createPostData: {},
+      loading: false
     }
   }
 
@@ -21,13 +23,16 @@ class FeedPage extends Component {
     this.props.getPosts()
   }
 
-  handleSubmission = (event) => {
+  handleSubmission = async (event) => {
     event.preventDefault()
-    this.props.createPost(this.state.createPostData)
+    this.setState({loading: true})
+    await this.props.createPost(this.state.createPostData)
     this.setState({
       createPostData: {
-        [event.target.name]: ""
-      }
+        title: '',
+        text: ''
+      },
+      loading: false
     })
   }
 
@@ -74,6 +79,7 @@ class FeedPage extends Component {
     return (
       <>
         <Appbar page={"feed"} />
+        <Loading open={this.state.loading}/>
 
         <FeedWrapper>
 
@@ -180,11 +186,7 @@ class FeedPage extends Component {
 
             :
 
-            <LoadingWrapper>
-              <Typography component="p" variant="h6" color="inherit">
-                Carregando...
-              </Typography>
-            </LoadingWrapper>
+            <Loading open={true}/>
 
           }
 

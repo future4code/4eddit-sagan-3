@@ -57,11 +57,6 @@ export const TitleCreatePost = styled(Typography)`
   margin: 1rem;
 `
 
-export const LoadingWrapper = styled.div`
-  text-align: center;
-  margin-top: 1rem;
-`
-
 export const Image = styled.img`
   width: 100%
 `
