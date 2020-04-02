@@ -37,11 +37,9 @@ class RegisterPage extends Component {
   }
 
   render() {
-
-    // console.log(this.state.registerData)
-
     return (
       <>
+      
         <Appbar page={'register'} />
 
         <RegisterWrapper>
@@ -73,6 +71,7 @@ class RegisterPage extends Component {
             <ButtonStyled type="submit" color="primary" variant="contained">
               Cadastrar
             </ButtonStyled>
+
           </FormRegister>
 
         </RegisterWrapper>

@@ -32,10 +32,6 @@ class Appbar extends Component {
     let buttonsPersonalized
     switch (page) {
 
-      case "register":
-        buttonsPersonalized = {buttonLogin}
-        break;
-
       case "login":
       case "detail":
         if (token !== null) {
@@ -62,6 +58,10 @@ class Appbar extends Component {
             {buttonFeed}
             {buttonLogout}
           </div>
+        break;
+      
+        case "register":
+        buttonsPersonalized = buttonLogin
         break;
 
       default:
