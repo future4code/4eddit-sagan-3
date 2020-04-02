@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { voteInDetail, createComment, voteComment } from '../../actions'
 
 import Appbar from "../../components/Appbar";
+import Loading from '../../components/Loading/'
 
 import { TextField, CardContent, Typography, CardActions, IconButton } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
@@ -14,15 +15,18 @@ class DetailPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      commentText: ""
+      commentText: "",
+      loading: false
     }
   }
 
-  handleSubmission = (event) => {
+  handleSubmission = async (event) => {
     event.preventDefault()
-    this.props.createComment(this.state.commentText, this.props.postId)
+    this.setState({loading: true})
+    await this.props.createComment(this.state.commentText, this.props.postId)
     this.setState({
-      commentText: ""
+      commentText: "",
+      loading: false
     })
   }
 
@@ -70,6 +74,7 @@ class DetailPage extends Component {
 
   render() {
     const { postDetail } = this.props
+    // console.log(postDetail)
 
     let newComments = []
     if (postDetail !== null) { // null - pessoa logada, acessa a rota diretamente
@@ -79,11 +84,12 @@ class DetailPage extends Component {
       return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0
     })
 
-    console.log(ordenedComments)
+    // console.log(ordenedComments)
 
     return (
       <div>
         <Appbar page={"detail"} />
+        <Loading open={this.state.loading}/>
 
         {postDetail ?
 
