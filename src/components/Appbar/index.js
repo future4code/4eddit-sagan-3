@@ -16,43 +16,52 @@ class Appbar extends Component {
   }
 
   render() {
-    const { goToFeed, goToLogin, page, token } = this.props
+    const { goToFeed, goToLogin, goToProfile, page, token } = this.props
+
+    const buttonLogin = <Button onClick={goToLogin} color="inherit">Login</Button>
+
+    const buttonFeed = <Button onClick={goToFeed} color="inherit">Feed</Button>
+
+    const buttonProfile = <Button onClick={goToProfile} color="inherit">Profile</Button>
+
+    const buttonLogout =
+      <IconButton color="inherit" onClick={this.logout}>
+        <PowerSettingsNewRounded />
+      </IconButton>
 
     let buttonsPersonalized
     switch (page) {
 
+      case "register":
+        buttonsPersonalized = {buttonLogin}
+        break;
+
+      case "login":
       case "detail":
-        buttonsPersonalized =
-          <div>
-            <Button onClick={goToFeed} color="inherit">Feed</Button>
-            <IconButton color="inherit" onClick={this.logout}>
-              <PowerSettingsNewRounded />
-            </IconButton>
-          </div>
+        if (token !== null) {
+          buttonsPersonalized =
+            <div>
+              {buttonFeed}
+              {buttonProfile}
+              {buttonLogout}
+            </div>
+        }
         break;
 
       case "feed":
         buttonsPersonalized =
-          <IconButton color="inherit" onClick={this.logout}>
-            <PowerSettingsNewRounded />
-          </IconButton>
+          <div>
+            {buttonProfile}
+            {buttonLogout}
+          </div>
         break;
 
-      case "register":
+      case "profile":
         buttonsPersonalized =
-          <Button onClick={goToLogin} color="inherit">Login</Button>
-        break;
-
-      case "login":
-        if (token !== null) {
-          buttonsPersonalized =
-            <div>
-              <Button onClick={goToFeed} color="inherit">Feed</Button>
-              <IconButton color="inherit" onClick={this.logout}>
-                <PowerSettingsNewRounded />
-              </IconButton>
-            </div>
-        }
+          <div>
+            {buttonFeed}
+            {buttonLogout}
+          </div>
         break;
 
       default:
@@ -81,7 +90,8 @@ class Appbar extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     goToFeed: () => dispatch(push(routes.feed)),
-    goToLogin: () => dispatch(push(routes.root))
+    goToLogin: () => dispatch(push(routes.root)),
+    goToProfile: () => dispatch(push(routes.profile))
   }
 }
 

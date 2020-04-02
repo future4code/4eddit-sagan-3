@@ -7,12 +7,14 @@ import LoginPage from "../LoginPage";
 import RegisterPage from "../RegisterPage";
 import FeedPage from "../FeedPage";
 import DetailPage from "../DetailPage";
+import ProfilePage from "../ProfilePage";
 
 export const routes = {
   root: "/",
   register: "/register",
   feed: "/posts/feed",
-  detail: "/posts/detail"
+  detail: "/posts/detail",
+  profile: "/posts/profile"
 };
 
 function Router(props) {
@@ -24,6 +26,7 @@ function Router(props) {
 
         <ProtectedRoute exact path={routes.feed} component={FeedPage} />
         <ProtectedRoute exact path={routes.detail} component={DetailPage} />
+        <ProtectedRoute exact path={routes.profile} component={ProfilePage} />
         
         <Route path="*" component={() => "Página não encontrada"} />
       </Switch>
