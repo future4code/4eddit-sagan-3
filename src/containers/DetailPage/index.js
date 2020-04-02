@@ -8,7 +8,7 @@ import Loading from '../../components/Loading/'
 import { TextField, CardContent, Typography, CardActions, IconButton } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { BoxCommentWrapper, ButtonStyled, CardPost, CommentHeader, DetailWrapper, FormCreateComment, PostFooter, PostHeader, VotesWrapper, TitleCreateComment, LoadingWrapper, Image } from './styles'
+import { BoxCommentWrapper, ButtonStyled, CardPost, CommentHeader, DetailWrapper, FormCreateComment, PostFooter, PostHeader, VotesWrapper, TitleCreateComment, Image } from './styles'
 
 
 class DetailPage extends Component {
@@ -217,11 +217,7 @@ class DetailPage extends Component {
 
               :
 
-              <LoadingWrapper>
-                <Typography component="p" variant="h6" color="inherit">
-                  Carregando...
-                </Typography>
-              </LoadingWrapper>
+              <Loading open={true}/>
 
             }
 
