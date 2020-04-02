@@ -145,7 +145,7 @@ class FeedPage extends Component {
                   </VotesWrapper>
 
                   <Comments onClick={() => this.handlePostClicked(post.id)}>
-                    {post.commentsNumber} comentários
+                    {post.commentsNumber} {post.commentsNumber === 1 ? 'comentário' : 'comentários'}
                   </Comments>
                 </PostFooter>
 

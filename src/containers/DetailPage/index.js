@@ -7,7 +7,8 @@ import Appbar from "../../components/Appbar";
 import { TextField, CardContent, Typography, CardActions, IconButton } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { BoxCommentWrapper, ButtonStyled, CardPost, CommentHeader, DetailWrapper, FormCreateComment, PostFooter, PostHeader, VotesWrapper, TitleCreateComment, Comments, LoadingWrapper } from './styles'
+import { BoxCommentWrapper, ButtonStyled, CardPost, CommentHeader, DetailWrapper, FormCreateComment, PostFooter, PostHeader, VotesWrapper, TitleCreateComment, LoadingWrapper } from './styles'
+
 
 class DetailPage extends Component {
   constructor(props) {
@@ -75,9 +76,12 @@ class DetailPage extends Component {
           <DetailWrapper>
 
             <CardPost>
-              <PostHeader title={postDetail.title} />
+              <PostHeader title={postDetail.username} />
 
               <CardContent>
+                <Typography variant="h6" component="p">
+                  {postDetail.title}
+                </Typography>
                 <Typography variant="body1" color="textSecondary" component="p">
                   {postDetail.text}
                 </Typography>
@@ -96,9 +100,9 @@ class DetailPage extends Component {
                   </IconButton>
                 </VotesWrapper>
 
-                <Comments>
-                  {postDetail.commentsNumber} comentários
-                  </Comments>
+                <Typography>
+                  {postDetail.commentsNumber} {postDetail.commentsNumber === 1 ? 'comentário' : 'comentários'}
+                </Typography>
               </PostFooter>
 
             </CardPost>

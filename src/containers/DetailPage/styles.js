@@ -56,12 +56,6 @@ export const TitleCreateComment = styled(Typography)`
   margin: 1rem;
 `
 
-export const Comments = styled(Typography)`
-  :hover{
-    cursor: pointer;
-  }
-`
-
 export const LoadingWrapper = styled.div`
   text-align: center;
   margin-top: 1rem;
