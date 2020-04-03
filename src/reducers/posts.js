@@ -2,8 +2,9 @@ const initialState = {
     allPosts: [],
     postDetail: null,
     postId: null,
+    filteredPosts: [],
+    inputSearch: ''
 }
-
 
 const posts = (state = initialState, action) => {
     switch (action.type) {
@@ -11,7 +12,8 @@ const posts = (state = initialState, action) => {
         case "SET_POSTS":
             return {
                 ...state,
-                allPosts: action.payload.posts
+                allPosts: action.payload.posts,
+                filteredPosts: action.payload.posts // ATENÇÃO
             }
 
         case "SET_POST_DETAIL":
@@ -20,12 +22,24 @@ const posts = (state = initialState, action) => {
                 postDetail: action.payload.post
             }
 
-            case "SET_POST_ID":
+        case "SET_POST_ID":
             return {
                 ...state,
                 postId: action.payload.id
             }
-            
+
+        case "SET_FILTERED_POSTS":
+            return {
+                ...state,
+                filteredPosts: action.payload.posts // ATENÇÃO
+            }
+
+        case "SET_INPUT_SEARCH":
+            return {
+                ...state,
+                inputSearch: action.payload.inputData
+            }
+
         default:
             return state
 
