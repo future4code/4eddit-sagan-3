@@ -7,6 +7,7 @@ export const CardPost = styled(Card)`
 
 export const PostHeader = styled(CardHeader)`
   text-align: center;
+  padding-bottom: 0;
 `
 
 export const PostFooter = styled(CardContent)`
@@ -26,5 +27,16 @@ export const Comments = styled(Typography)`
 `
 
 export const Image = styled.img`
-  width: 100%
+  width: 100%;
+`
+
+export const Date = styled(Typography)`
+  text-align: right;
+  padding-right: 1rem;
+  font-style: italic;
+`
+
+export const CardContentStyled = styled(CardContent)`
+  padding-top: 0;
+  padding-bottom: 0;
 `

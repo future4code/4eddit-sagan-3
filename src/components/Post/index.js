@@ -2,41 +2,39 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { vote, getPostsDetail, getPostId } from '../../actions'
 
-import { CardContent, Typography, CardActionArea, IconButton } from "@material-ui/core";
+import { turnsDate } from './constants'
+
+import { Typography, CardActionArea, IconButton } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { CardPost, Comments, PostFooter, PostHeader, VotesWrapper, Image } from './styles'
+import { CardPost, Comments, PostFooter, PostHeader, VotesWrapper, Image, Date, CardContentStyled } from './styles'
 
 
 class Post extends Component {
 
-
     handlePostClicked = (postId) => {
         this.props.getPostId(postId)
     }
-
 
     onClickClearVote = (postId) => {
         const thisDirection = 0
         this.props.vote(postId, thisDirection)
     }
 
-
     onclickUp = (postId) => {
         const thisDirection = + 1
         this.props.vote(postId, thisDirection)
     }
-
 
     onclickDown = (postId) => {
         const thisDirection = - 1
         this.props.vote(postId, thisDirection)
     }
 
-
     render() {
 
         const { post } = this.props
+        const date = turnsDate(post.createdAt)
 
         return (
             <>
@@ -45,7 +43,10 @@ class Post extends Component {
 
                     <CardActionArea onClick={() => this.handlePostClicked(post.id)}>
                         <PostHeader title={post.username} />
-                        <CardContent>
+                            <Date variant="overline" color="textSecondary" component="p">
+                                {date}
+                            </Date>
+                        <CardContentStyled>
                             <Typography variant="h6" component="p">
                                 {post.title}
                             </Typography>
@@ -57,7 +58,7 @@ class Post extends Component {
                                     {post.text}
                                 </Typography>
                             }
-                        </CardContent>
+                        </CardContentStyled>
                     </CardActionArea>
 
                     <PostFooter>
