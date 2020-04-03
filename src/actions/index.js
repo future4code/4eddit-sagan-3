@@ -40,10 +40,24 @@ export const login = (loginData) => async (dispatch) => {
 }
 
 
-const setPosts = (posts) => ({
+export const setPosts = (posts) => ({
     type: 'SET_POSTS',
     payload: {
         posts
+    }
+})
+
+export const setFilteredPosts = (posts) => ({
+    type: 'SET_FILTERED_POSTS',
+    payload: {
+        posts
+    }
+})
+
+export const setInputSearch = (inputData) => ({
+    type: 'SET_INPUT_SEARCH',
+    payload: {
+        inputData
     }
 })
 

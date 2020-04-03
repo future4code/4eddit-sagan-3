@@ -3,20 +3,58 @@ import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { routes } from '../../containers/Router'
 
-import { AppBar, Button, IconButton } from "@material-ui/core";
-import { PowerSettingsNewRounded } from '@material-ui/icons';
+import { setFilteredPosts, setInputSearch } from '../../actions'
 
-import { ToolbarStyled, Logo } from './styles'
+import { AppBar, Button, IconButton } from "@material-ui/core";
+import { PowerSettingsNewRounded, Search } from '@material-ui/icons';
+
+import { ToolbarStyled, Logo, DivSearch, DivSearchIcons, InputBaseStyled } from './styles'
 
 class Appbar extends Component {
+
+  constructor(props){
+    super(props)
+    this.state = {
+      inputSearch: ''
+    }
+  }
 
   logout = () => {
     localStorage.clear()
     this.props.goToLogin()
   }
 
+  onChangeInputSearch = (e) => {
+    this.setState({inputSearch: e.target.value})
+  }
+
+  onPressEnter = (event) => {
+    const { allPosts, setFilteredPosts } = this.props
+    const { inputSearch } = this.state
+
+		if (event.key === 'Enter') {
+      this.props.setInputSearch(this.state.inputSearch)
+
+      if(inputSearch.length === 0) {
+        setFilteredPosts(allPosts)
+        return
+      }
+
+			const searchData = allPosts.filter(post => {
+        const postText = post.text.toLowerCase()
+        const postTitle = post.title.toLowerCase()
+        const inputSearchLowerCase = inputSearch.toLowerCase()
+        
+        return postText.includes(inputSearchLowerCase) || postTitle.includes(inputSearchLowerCase)
+      })
+      console.log(searchData)
+      setFilteredPosts(searchData)
+		}
+	}
+
   render() {
     const { goToFeed, goToLogin, goToProfile, page, token } = this.props
+    const { inputSearch } = this.state
 
     const buttonLogin = <Button onClick={goToLogin} color="inherit">Login</Button>
 
@@ -46,21 +84,37 @@ class Appbar extends Component {
 
       case "feed":
         buttonsPersonalized =
-          <div>
-            {buttonProfile}
-            {buttonLogout}
-          </div>
+          <>
+            <DivSearch>
+              <DivSearchIcons>
+                <Search/>
+              </DivSearchIcons>
+              <InputBaseStyled
+                placeholder="Buscar..."
+                inputProps={{ 'aria-label': 'search' }}
+                value={inputSearch}
+                onChange={this.onChangeInputSearch}
+                onKeyDown={this.onPressEnter}
+              />
+            </DivSearch>
+            <div>
+              {buttonProfile}
+              {buttonLogout}
+            </div>
+          </>
         break;
 
       case "profile":
         buttonsPersonalized =
-          <div>
-            {buttonFeed}
-            {buttonLogout}
-          </div>
+          <>
+            <div>
+              {buttonFeed}
+              {buttonLogout}
+            </div>
+          </>
         break;
-      
-        case "register":
+
+      case "register":
         buttonsPersonalized = buttonLogin
         break;
 
@@ -87,12 +141,19 @@ class Appbar extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  allPosts: state.posts.allPosts,
+  inputSearch: state.posts.inputSearch
+})
+
 const mapDispatchToProps = (dispatch) => {
   return {
     goToFeed: () => dispatch(push(routes.feed)),
     goToLogin: () => dispatch(push(routes.root)),
-    goToProfile: () => dispatch(push(routes.profile))
+    goToProfile: () => dispatch(push(routes.profile)),
+    setFilteredPosts: (posts) => dispatch(setFilteredPosts(posts)),
+    setInputSearch: (inputData) => dispatch(setInputSearch(inputData))
   }
 }
 
-export default connect(null, mapDispatchToProps)(Appbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Appbar);

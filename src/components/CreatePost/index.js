@@ -57,7 +57,7 @@ class CreatePost extends Component {
                             Criar Publicação
                         </TitleCreatePost>
 
-                        <TextField id="post" label="Título" variant="outlined"
+                        <TextField id="titulo" label="Título" variant="outlined"
                             type="text"
                             required
                             inputProps={{

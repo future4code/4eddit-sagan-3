@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getPosts } from '../../actions'
+
 import CreatePost from "../../components/CreatePost"
 import Post from "../../components/Post"
-
 import Appbar from "../../components/Appbar";
 import Loading from '../../components/Loading/'
 
@@ -17,9 +17,9 @@ class FeedPage extends Component {
   }
 
   render() {
-    const { allPosts } = this.props
+    const { filteredPosts, inputSearch } = this.props
 
-    const newAllPosts = [...allPosts]
+    const newAllPosts = [...filteredPosts]
     const ordenedPosts = newAllPosts.sort((a, b) => {
       return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0
     })
@@ -30,7 +30,8 @@ class FeedPage extends Component {
 
         <FeedWrapper>
 
-          <CreatePost />
+          {/* Tá pesquisando? Não inventa de criar post... nem o facebook permite né rs */}
+          {inputSearch.length === 0 && <CreatePost />}
 
           { ordenedPosts.length > 0 ?
              ordenedPosts.map(post => <Post post={post} key={post.id} />)
@@ -45,7 +46,8 @@ class FeedPage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  allPosts: state.posts.allPosts
+  filteredPosts: state.posts.filteredPosts,
+  inputSearch: state.posts.inputSearch
 })
 
 const mapDispatchToProps = (dispatch) => {
