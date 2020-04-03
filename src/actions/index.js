@@ -7,16 +7,18 @@ const baseUrl = "https://us-central1-future-apis.cloudfunctions.net/fourEddit"
 
 
 export const signup = (registerData) => async (dispatch) => {
-    // console.log("chegou!", registerData)
     const newData = {
         email: registerData.email,
         password: registerData.password,
         username: registerData.username
     }
-    // console.log(newData)
     try {
-        await axios.post(`${baseUrl}/signup`, newData)
-        alert('Cadastro efetuado com sucesso!')
+        const response = await axios.post(`${baseUrl}/signup`, newData)
+        const token = response.data.token
+        const user = response.data.user
+        localStorage.setItem("token", token)
+        localStorage.setItem("user", JSON.stringify(user))
+        dispatch(push(routes.feed))
     } catch (error) {
         console.error(error.message)
         alert("Não foi possível efetuar cadastro.")

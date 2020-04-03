@@ -5,7 +5,7 @@ export const loginForm = [
         label: "Nome do Usuário",
         type: "text",
         required: true,
-        pattern: "[A-Za-z ]{3,}",
+        pattern: "[A-Za-zÀ-ú ]{3,}",
         title: "O campo Nome do Usuário deve ter no mínimo 3 letras.",
     },
     {

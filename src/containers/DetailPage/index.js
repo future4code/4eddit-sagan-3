@@ -8,8 +8,11 @@ import Appbar from "../../components/Appbar";
 import { Typography } from "@material-ui/core";
 
 import { DetailWrapper } from './styles'
-import Post from "../../components/Post";
+// import Post from "../../components/Post";
 import CreateComment from "../../components/CreateComment";
+import PostInDetail from "../../components/PostInDetail";
+
+
 
 
 class DetailPage extends Component {
@@ -39,7 +42,7 @@ class DetailPage extends Component {
 
           <DetailWrapper>
 
-            <Post post={postDetail} />
+            <PostInDetail post={postDetail} />
 
             <CreateComment />
 

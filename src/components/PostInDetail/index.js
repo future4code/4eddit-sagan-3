@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { vote, getPostsDetail, getPostId } from '../../actions'
+import { voteInDetail, getPostsDetail, getPostId } from '../../actions'
 
 import { CardContent, Typography, CardActionArea, IconButton } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
@@ -8,30 +8,23 @@ import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 import { CardPost, Comments, PostFooter, PostHeader, VotesWrapper, Image } from './styles'
 
 
-class Post extends Component {
-
-
-    handlePostClicked = (postId) => {
-        this.props.getPostsDetail(postId)
-        this.props.getPostId(postId)
-    }
-
+class PostInDetail extends Component {
 
     onClickClearVote = (postId) => {
         const thisDirection = 0
-        this.props.vote(postId, thisDirection)
+        this.props.voteInDetail(postId, thisDirection)
     }
 
 
     onclickUp = (postId) => {
         const thisDirection = + 1
-        this.props.vote(postId, thisDirection)
+        this.props.voteInDetail(postId, thisDirection)
     }
 
 
     onclickDown = (postId) => {
         const thisDirection = - 1
-        this.props.vote(postId, thisDirection)
+        this.props.voteInDetail(postId, thisDirection)
     }
 
 
@@ -44,7 +37,7 @@ class Post extends Component {
 
                 <CardPost>
 
-                    <CardActionArea onClick={() => this.handlePostClicked(post.id)}>
+                    {/* <CardActionArea> */}
                         <PostHeader title={post.username} />
                         <CardContent>
                             <Typography variant="h6" component="p">
@@ -59,7 +52,7 @@ class Post extends Component {
                                 </Typography>
                             }
                         </CardContent>
-                    </CardActionArea>
+                    {/* </CardActionArea> */}
 
                     <PostFooter>
                         <VotesWrapper>
@@ -90,7 +83,7 @@ class Post extends Component {
 
                         </VotesWrapper>
 
-                        <Comments onClick={() => this.handlePostClicked(post.id)}>
+                        <Comments>
                             {post.commentsCount} {post.commentsCount === 1 ? 'comentário' : 'comentários'}
                         </Comments>
                     </PostFooter>
@@ -104,10 +97,10 @@ class Post extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        vote: (id, direction) => dispatch(vote(id, direction)),
+        voteInDetail: (id, direction) => dispatch(voteInDetail(id, direction)),
         getPostsDetail: (postId) => dispatch(getPostsDetail(postId)),
         getPostId: (postId) => dispatch(getPostId(postId)),
     }
 }
 
-export default connect(null, mapDispatchToProps)(Post);
+export default connect(null, mapDispatchToProps)(PostInDetail);
