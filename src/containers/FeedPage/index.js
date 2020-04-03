@@ -11,13 +11,6 @@ import { FeedWrapper } from './styles'
 
 
 class FeedPage extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      createPostData: {},
-      loading: false
-    }
-  }
 
   componentDidMount = () => {
     this.props.getPosts()
@@ -34,14 +27,15 @@ class FeedPage extends Component {
     return (
       <>
         <Appbar page={"feed"} />
-        <Loading open={this.state.loading} />
 
         <FeedWrapper>
 
           <CreatePost />
 
-          { ordenedPosts.length > 0 &&
+          { ordenedPosts.length > 0 ?
              ordenedPosts.map(post => <Post post={post} key={post.id} />)
+             :
+             <Loading open={true} />
           }
 
         </FeedWrapper>

@@ -27,6 +27,7 @@ class Comment extends Component {
 
     render() {
         const { comment } = this.props
+        console.log(comment)
 
         return (
             <>
@@ -53,7 +54,8 @@ class Comment extends Component {
                         }
 
                         <Typography>
-                            {comment.votesCount}
+                            {comment.votesCount ? comment.votesCount : 0 }
+                            {/* {comment.votesCount } */}
                         </Typography>
 
                         {comment.userVoteDirection === -1 ?
