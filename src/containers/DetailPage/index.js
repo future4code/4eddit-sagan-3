@@ -37,7 +37,7 @@ class DetailPage extends Component {
     }
 
     const ordenedComments = newComments.sort((a, b) => {
-      return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0
+      return a.createdAt < b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0
     })
 
     return (
