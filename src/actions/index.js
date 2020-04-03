@@ -2,20 +2,23 @@ import axios from 'axios'
 import { routes } from '../containers/Router'
 import { push } from "connected-react-router";
 
-const baseUrl = "https://us-central1-missao-newton.cloudfunctions.net/fourEddit"
-
+// const baseUrl = "https://us-central1-missao-newton.cloudfunctions.net/fourEddit"
+const baseUrl = "https://us-central1-future-apis.cloudfunctions.net/fourEddit"
+const getToken = () => localStorage.getItem("token")
 
 export const signup = (registerData) => async (dispatch) => {
-    // console.log("chegou!", registerData)
     const newData = {
         email: registerData.email,
         password: registerData.password,
         username: registerData.username
     }
-    // console.log(newData)
     try {
-        await axios.post(`${baseUrl}/signup`, newData)
-        alert('Cadastro efetuado com sucesso!')
+        const response = await axios.post(`${baseUrl}/signup`, newData)
+        const token = response.data.token
+        const user = response.data.user
+        localStorage.setItem("token", token)
+        localStorage.setItem("user", JSON.stringify(user))
+        dispatch(push(routes.feed))
     } catch (error) {
         console.error(error.message)
         alert("Não foi possível efetuar cadastro.")
@@ -45,12 +48,10 @@ const setPosts = (posts) => ({
 })
 
 export const getPosts = () => async (dispatch) => {
-
     try {
-        const token = localStorage.getItem("token")
         const response = await axios.get(`${baseUrl}/posts`, {
             headers: {
-                auth: token
+                auth: getToken()
             }
         })
         dispatch(setPosts(response.data.posts))
@@ -67,16 +68,14 @@ export const createPost = (createPostData) => async (dispatch) => {
         title: createPostData.title
     }
     try {
-        const token = localStorage.getItem("token")
         await axios.post(`${baseUrl}/posts`,
             newData,
             {
                 headers: {
-                    auth: token
+                    auth: getToken()
                 }
             }
         )
-        // alert("Post cadastrado com sucesso!")
         dispatch(getPosts())
     } catch (error) {
         console.error(error.message)
@@ -85,14 +84,12 @@ export const createPost = (createPostData) => async (dispatch) => {
 }
 
 export const vote = (id, direction) => async (dispatch, getState) => {
-    const token = localStorage.getItem("token")
-
     try {
         await axios.put(`${baseUrl}/posts/${id}/vote`,
             { direction: direction },
             {
                 headers: {
-                    auth: token
+                    auth: getToken()
                 }
             }
         )
@@ -101,44 +98,28 @@ export const vote = (id, direction) => async (dispatch, getState) => {
         // if(state.posts.postId){
         //     dispatch(getPostsDetail(state.posts.postId))
         // }
-
     } catch (error) {
         console.error(error.message)
         alert("Não foi possível votar no post.")
     }
 }
 
-
 export const voteInDetail = (id, direction) => async (dispatch, getState) => {
-    const token = localStorage.getItem("token")
-
     try {
         await axios.put(`${baseUrl}/posts/${id}/vote`,
             { direction: direction },
             {
                 headers: {
-                    auth: token
+                    auth: getToken()
                 }
             }
         )
-
         dispatch(getPostsDetail(id))
-
-
     } catch (error) {
         console.error(error.message)
         alert("Não foi possível votar no post.")
     }
 }
-
-
-
-const setPostDetail = (post) => ({
-    type: 'SET_POST_DETAIL',
-    payload: {
-        post
-    }
-})
 
 const setPostId = (id) => ({
     type: 'SET_POST_ID',
@@ -149,19 +130,25 @@ const setPostId = (id) => ({
 
 export const getPostId = (postId) => async (dispatch) => {
     dispatch(setPostId(postId))
+    dispatch(push(routes.detail))
 }
 
 
+export const setPostDetail = (post) => ({
+    type: 'SET_POST_DETAIL',
+    payload: {
+        post
+    }
+})
+
 export const getPostsDetail = (postId) => async (dispatch) => {
     try {
-        const token = localStorage.getItem("token")
         const response = await axios.get(`${baseUrl}/posts/${postId}`, {
             headers: {
-                auth: token
+                auth: getToken()
             }
         })
         dispatch(setPostDetail(response.data.post))
-        dispatch(push(routes.detail))
     } catch (error) {
         console.error(error.message)
         alert("Não foi possível acessar os detalhes do post.")
@@ -171,17 +158,15 @@ export const getPostsDetail = (postId) => async (dispatch) => {
 
 export const createComment = (createCommentData, postId) => async (dispatch) => {
     try {
-        const token = localStorage.getItem("token")
         await axios.post(`${baseUrl}/posts/${postId}/comment`,
             { text: createCommentData },
             {
                 headers: {
-                    auth: token
+                    auth: getToken()
                 }
             }
         )
         dispatch(getPostsDetail(postId))
-
     } catch (error) {
         console.error(error.message)
         alert("Não foi possível criar seu comentário.")
@@ -189,14 +174,12 @@ export const createComment = (createCommentData, postId) => async (dispatch) => 
 }
 
 export const voteComment = (postId, commentId, direction) => async (dispatch) => {
-    const token = localStorage.getItem("token")
-
     try {
         await axios.put(`${baseUrl}/posts/${postId}/comment/${commentId}/vote`,
             { direction: direction },
             {
                 headers: {
-                    auth: token
+                    auth: getToken()
                 }
             }
         )

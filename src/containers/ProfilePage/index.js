@@ -5,12 +5,18 @@ import CreatePost from "../../components/CreatePost"
 import Post from "../../components/Post"
 
 import Appbar from "../../components/Appbar";
-import Loading from '../../components/Loading/'
+import Loading from '../../components/Loading'
 
-import { FeedWrapper } from './styles'
+import { ProfileWrapper } from './styles'
 
-
-class FeedPage extends Component {
+class ProfilePage extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      createPostData: {},
+      loading: false
+    }
+  }
 
   componentDidMount = () => {
     this.props.getPosts()
@@ -24,21 +30,26 @@ class FeedPage extends Component {
       return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0
     })
 
+    const user = localStorage.getItem('user')
+    const newUser = JSON.parse(user)
+    const myPosts = ordenedPosts.filter(post => post.username === newUser.username)
+    // console.log(myPosts)
+
     return (
       <>
-        <Appbar page={"feed"} />
+        <Appbar page={"profile"} />
+        <Loading open={this.state.loading} />
 
-        <FeedWrapper>
+        <ProfileWrapper>
 
           <CreatePost />
 
-          { ordenedPosts.length > 0 ?
-             ordenedPosts.map(post => <Post post={post} key={post.id} />)
-             :
-             <Loading open={true} />
+          { myPosts.length > 0 
+            ? myPosts.map(post => <Post post={post} key={post.id} />)
+            : <Loading open={true} />
           }
 
-        </FeedWrapper>
+        </ProfileWrapper>
       </>
     );
   }
@@ -54,4 +65,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FeedPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);
