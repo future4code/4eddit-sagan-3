@@ -44,9 +44,8 @@ class ProfilePage extends Component {
 
           <CreatePost />
 
-          { myPosts.length > 0
-            ? myPosts.map(post => <Post post={post} key={post.id} />)
-            : <Loading open={true} />
+          { myPosts.length > 0 &&
+            myPosts.map(post => <Post post={post} key={post.id} />)
           }
 
         </ProfileWrapper>

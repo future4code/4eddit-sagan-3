@@ -2,7 +2,8 @@ import axios from 'axios'
 import { routes } from '../containers/Router'
 import { push } from "connected-react-router";
 
-const baseUrl = "https://us-central1-missao-newton.cloudfunctions.net/fourEddit"
+// const baseUrl = "https://us-central1-missao-newton.cloudfunctions.net/fourEddit"
+const baseUrl = "https://us-central1-future-apis.cloudfunctions.net/fourEddit"
 
 
 export const signup = (registerData) => async (dispatch) => {

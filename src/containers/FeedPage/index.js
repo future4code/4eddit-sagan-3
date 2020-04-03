@@ -31,9 +31,6 @@ class FeedPage extends Component {
       return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0
     })
 
-    // const user = localStorage.getItem('user')
-    // const newUser = JSON.parse(user)
-
     return (
       <>
         <Appbar page={"feed"} />
@@ -43,12 +40,8 @@ class FeedPage extends Component {
 
           <CreatePost />
 
-          {ordenedPosts.length > 0
-            ? ordenedPosts
-              // .filter(post => post.username === newUser.username)
-              .map(post => <Post post={post} key={post.id} />)
-
-            : <Loading open={true} />
+          { ordenedPosts.length > 0 &&
+             ordenedPosts.map(post => <Post post={post} key={post.id} />)
           }
 
         </FeedWrapper>
