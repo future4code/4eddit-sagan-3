@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Card, CardHeader, CardContent, Typography, CardActions } from "@material-ui/core";
+import { Card, CardHeader, CardContent, CardActions } from "@material-ui/core";
 
 export const CardPost = styled(Card)`
   margin: 1rem;
@@ -17,12 +17,6 @@ export const PostFooter = styled(CardContent)`
 
 export const VotesWrapper = styled(CardActions)`
   padding: 0;
-`
-
-export const Comments = styled(Typography)`
-  :hover{
-    cursor: pointer;
-  }
 `
 
 export const Image = styled.img`

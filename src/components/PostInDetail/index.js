@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { voteInDetail, getPostsDetail, getPostId } from '../../actions'
 
-import { CardContent, Typography, CardActionArea, IconButton } from "@material-ui/core";
+import { CardContent, Typography, IconButton } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { CardPost, Comments, PostFooter, PostHeader, VotesWrapper, Image } from './styles'
-
+import { CardPost, PostFooter, PostHeader, VotesWrapper, Image } from './styles'
 
 class PostInDetail extends Component {
 
@@ -37,22 +36,20 @@ class PostInDetail extends Component {
 
                 <CardPost>
 
-                    {/* <CardActionArea> */}
-                        <PostHeader title={post.username} />
-                        <CardContent>
-                            <Typography variant="h6" component="p">
-                                {post.title}
+                    <PostHeader title={post.username} />
+                    <CardContent>
+                        <Typography variant="h6" component="p">
+                            {post.title}
+                        </Typography>
+                        {/* Fazendo uma brincadeirinha no front - sabemos que só vai funcionar no nosso site ;) */}
+                        {post.text.includes('.jpeg') || post.text.includes('.png') || post.text.includes('.gif') ?
+                            <Image src={post.text} />
+                            :
+                            <Typography variant="body1" color="textSecondary" component="p">
+                                {post.text}
                             </Typography>
-                            {/* Fazendo uma brincadeirinha no front - sabemos que só vai funcionar no nosso site ;) */}
-                            {post.text.includes('.jpeg') || post.text.includes('.png') || post.text.includes('.gif') ?
-                                <Image src={post.text} />
-                                :
-                                <Typography variant="body1" color="textSecondary" component="p">
-                                    {post.text}
-                                </Typography>
-                            }
-                        </CardContent>
-                    {/* </CardActionArea> */}
+                        }
+                    </CardContent>
 
                     <PostFooter>
                         <VotesWrapper>
@@ -83,9 +80,9 @@ class PostInDetail extends Component {
 
                         </VotesWrapper>
 
-                        <Comments>
+                        <Typography>
                             {post.commentsCount} {post.commentsCount === 1 ? 'comentário' : 'comentários'}
-                        </Comments>
+                        </Typography>
                     </PostFooter>
 
                 </CardPost>
