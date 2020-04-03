@@ -1,27 +1,32 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Comment from "../../components/Comment";
-import Loading from '../../components/Loading/'
-
-import Appbar from "../../components/Appbar";
-
-import { Typography } from "@material-ui/core";
+import { push } from "connected-react-router";
+import { routes } from '../Router'
 
 import { DetailWrapper } from './styles'
-// import Post from "../../components/Post";
-import CreateComment from "../../components/CreateComment";
+
+import { getPostsDetail, setPostDetail } from '../../actions'
+
+import Appbar from "../../components/Appbar";
+import Loading from '../../components/Loading/'
 import PostInDetail from "../../components/PostInDetail";
-
-
-
+import CreateComment from "../../components/CreateComment";
+import Comment from "../../components/Comment";
 
 class DetailPage extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      loading: false
+
+  componentDidMount = () => {
+    const { getPostsDetail, postId, goToFeed } = this.props
+    if(postId === null) { // pessoa logada acessa rota
+      goToFeed()
+      return
     }
+    getPostsDetail(postId)
   }
+
+  componentWillUnmount = () => {
+      this.props.setPostDetail(null)
+  }  
 
   render() {
     const { postDetail } = this.props
@@ -30,17 +35,18 @@ class DetailPage extends Component {
     if (postDetail !== null) { // null - pessoa logada, acessa a rota diretamente
       newComments = [...postDetail.comments]
     }
+
     const ordenedComments = newComments.sort((a, b) => {
       return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0
     })
 
     return (
-      <div>
+      <>
         <Appbar page={"detail"} />
 
-        {postDetail ?
+        { postDetail
 
-          <DetailWrapper>
+          ? (<DetailWrapper>
 
             <PostInDetail post={postDetail} />
 
@@ -51,26 +57,30 @@ class DetailPage extends Component {
               : <Loading open={true} />
             }
 
-          </DetailWrapper>
+          </DetailWrapper>)
 
-          :
-          <DetailWrapper>
-            <Typography component="p" variant="h6" color="inherit">
-              <strong>ERRO:</strong> retorne ao FEED para selecionar um post!
-            </Typography>
-          </DetailWrapper>
+
+          : (<Loading open={true} />)
 
         }
-
-      </div>
+      </>
     );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
+    postId: state.posts.postId,
     postDetail: state.posts.postDetail,
   }
 }
 
-export default connect(mapStateToProps)(DetailPage);
+const mapDispatchToProps = (dispatch) => {
+  return {
+      getPostsDetail: (postId) => dispatch(getPostsDetail(postId)),
+      goToFeed: () => dispatch(push(routes.feed)),
+      setPostDetail: (post) => dispatch(setPostDetail(post))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailPage);

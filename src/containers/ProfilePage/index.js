@@ -33,7 +33,7 @@ class ProfilePage extends Component {
     const user = localStorage.getItem('user')
     const newUser = JSON.parse(user)
     const myPosts = ordenedPosts.filter(post => post.username === newUser.username)
-    console.log(myPosts)
+    // console.log(myPosts)
 
     return (
       <>

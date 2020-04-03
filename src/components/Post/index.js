@@ -12,7 +12,6 @@ class Post extends Component {
 
 
     handlePostClicked = (postId) => {
-        this.props.getPostsDetail(postId)
         this.props.getPostId(postId)
     }
 
