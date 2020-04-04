@@ -64,7 +64,7 @@ class PostInDetail extends Component {
                         {post.text.includes('.jpeg') || post.text.includes('.png') || post.text.includes('.gif') ?
                             <Image src={post.text} />
                             :
-                            <Typography variant="body1" color="textSecondary" component="p">
+                            <Typography variant="body1"  component="p">
                                 {post.text}
                             </Typography>
                         }

@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { voteInDetail, voteComment } from '../../actions'
 
-import { CardContent, Typography, CardActions, IconButton } from "@material-ui/core";
+import { turnsDate } from '../Post/constants'
+
+import { CardContent, Typography, CardActions, IconButton, CardHeader } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { CardPost, CommentHeader } from './styles'
+import { CardPost, Date, AvatarStyled } from './styles'
 
 class Comment extends Component {
 
@@ -27,15 +29,29 @@ class Comment extends Component {
 
     render() {
         const { comment } = this.props
-        // console.log(comment)
+        const date = turnsDate(comment.createdAt)
+        const newAvatar = comment.username.slice(0, 1).toUpperCase()
 
         return (
             <>
                 <CardPost>
-                    <CommentHeader subheader={comment.username} />
+                    <CardHeader
+                        subheader={
+                            <>
+                            <Typography>
+                                {comment.username} <Date>{date}</Date>
+                            </Typography>
+                            </>
+                        }
+                        avatar={
+                            <AvatarStyled aria-label="recipe">
+                                {newAvatar}
+                            </AvatarStyled>
+                        }
+                    />
 
                     <CardContent>
-                        <Typography variant="body2" color="textSecondary" component="p">
+                        <Typography variant="body2" component="p">
                             {comment.text}
                         </Typography>
                     </CardContent>
