@@ -12,5 +12,5 @@ export const Date = styled.span`
 `
 
 export const AvatarStyled = styled(Avatar)`
-  background-color: rgba(163, 215, 255, 1);
+  background-color: #ff4081;
 `
