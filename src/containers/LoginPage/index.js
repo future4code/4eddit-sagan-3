@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { routes } from '../Router'
+
 import { login } from '../../actions'
 
 import Appbar from "../../components/Appbar";
 
 import { TextField, Button, Typography } from "@material-ui/core";
-
-import { ButtonStyled, FormLogin, LoginWrapper, RegisterWrapper } from './styles'
+import { ButtonStyled, FormLogin, LoginWrapper, RegisterWrapper, WelcomeText } from './styles'
 
 class LoginPage extends Component {
   constructor(props) {
@@ -49,9 +49,9 @@ class LoginPage extends Component {
 
           {token ?
 
-            <Typography variant="h5" color="textSecondary" component="p">
+            <WelcomeText variant="h5" color="textSecondary" component="p">
               Bem vindx, {newUser.username}
-            </Typography>
+            </WelcomeText>
 
             :
 

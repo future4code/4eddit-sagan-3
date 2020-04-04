@@ -1,95 +1,88 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { voteInDetail, voteComment } from '../../actions'
+import { voteComment } from '../../actions'
 
-import { turnsDate } from '../Post/constants'
+import { turnsDate } from '../../constants'
 
 import { CardContent, Typography, CardActions, IconButton, CardHeader } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
 import { CardPost, Date, AvatarStyled } from './styles'
 
-class Comment extends Component {
+function Comment(props) {
 
-    onClickCommentUp = (commentId) => {
+    const onClickCommentUp = (commentId) => {
+        const { voteComment, postId } = props
         const thisDirection = + 1
-        this.props.voteComment(this.props.postId, commentId, thisDirection)
+        voteComment(postId, commentId, thisDirection)
     }
 
-    onClickCommentDown = (commentId) => {
+    const onClickCommentDown = (commentId) => {
+        const { voteComment, postId } = props
         const thisDirection = - 1
-        this.props.voteComment(this.props.postId, commentId, thisDirection)
+        voteComment(postId, commentId, thisDirection)
     }
 
-    onClickClearVoteComment = (commentId) => {
+    const onClickClearVoteComment = (commentId) => {
+        const { voteComment, postId } = props
         const thisDirection = 0
-        this.props.voteComment(this.props.postId, commentId, thisDirection)
+        voteComment(postId, commentId, thisDirection)
     }
 
+    const { comment } = props
+    const date = turnsDate(comment.createdAt)
+    const newAvatar = comment.username.slice(0, 1).toUpperCase()
 
-    render() {
-        const { comment } = this.props
-        const date = turnsDate(comment.createdAt)
-        const newAvatar = comment.username.slice(0, 1).toUpperCase()
+    return (
+        <CardPost>
+            <CardHeader
+                subheader={
+                    <Typography>
+                        {comment.username} <Date>{date}</Date>
+                    </Typography>
+                }
+                avatar={
+                    <AvatarStyled aria-label="recipe">
+                        {newAvatar}
+                    </AvatarStyled>
+                }
+            />
 
-        return (
-            <>
-                <CardPost>
-                    <CardHeader
-                        subheader={
-                            <>
-                            <Typography>
-                                {comment.username} <Date>{date}</Date>
-                            </Typography>
-                            </>
-                        }
-                        avatar={
-                            <AvatarStyled aria-label="recipe">
-                                {newAvatar}
-                            </AvatarStyled>
-                        }
-                    />
+            <CardContent>
+                <Typography variant="body2" component="p">
+                    {comment.text}
+                </Typography>
+            </CardContent>
 
-                    <CardContent>
-                        <Typography variant="body2" component="p">
-                            {comment.text}
-                        </Typography>
-                    </CardContent>
+            <CardActions>
 
-                    <CardActions>
+                {comment.userVoteDirection === 1 ?
+                    <IconButton onClick={() => onClickClearVoteComment(comment.id)}>
+                        <ArrowUpwardRounded />
+                    </IconButton>
+                    :
+                    <IconButton onClick={() => onClickCommentUp(comment.id)}>
+                        <ArrowUpwardRounded color="primary" />
+                    </IconButton>
+                }
 
-                        {comment.userVoteDirection === 1 ?
-                            <IconButton onClick={() => this.onClickClearVoteComment(comment.id)}>
-                                <ArrowUpwardRounded />
-                            </IconButton>
-                            :
-                            <IconButton onClick={() => this.onClickCommentUp(comment.id)}>
-                                <ArrowUpwardRounded color="primary" />
-                            </IconButton>
+                <Typography>
+                    {comment.votesCount ? comment.votesCount : 0}
+                </Typography>
 
-                        }
+                {comment.userVoteDirection === -1 ?
+                    <IconButton onClick={() => onClickClearVoteComment(comment.id)}>
+                        <ArrowDownwardRounded />
+                    </IconButton>
+                    :
+                    <IconButton onClick={() => onClickCommentDown(comment.id)}>
+                        <ArrowDownwardRounded color="secondary" />
+                    </IconButton>
+                }
 
-                        <Typography>
-                            {comment.votesCount ? comment.votesCount : 0 }
-                            {/* {comment.votesCount } */}
-                        </Typography>
-
-                        {comment.userVoteDirection === -1 ?
-                            <IconButton onClick={() => this.onClickClearVoteComment(comment.id)}>
-                                <ArrowDownwardRounded />
-                            </IconButton>
-                            :
-                            <IconButton onClick={() => this.onClickCommentDown(comment.id)}>
-                                <ArrowDownwardRounded color="secondary" />
-                            </IconButton>
-                        }
-
-                    </CardActions>
-                </CardPost>
-
-            </>
-        )
-    }
+            </CardActions>
+        </CardPost>
+    )
 }
 
 const mapStateToProps = (state) => {
@@ -102,7 +95,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         voteComment: (postId, commentId, direction) => dispatch(voteComment(postId, commentId, direction)),
-        voteInDetail: (id, direction) => dispatch(voteInDetail(id, direction)),
     }
 }
 

@@ -2,14 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { createPost } from '../../actions'
 
-
 import Loading from '../../components/Loading/'
 
 import { TextField } from "@material-ui/core";
-
-
 import { BoxPostWrapper, ButtonStyled, FormCreatePost, TitleCreatePost, DivHeaderCreatePost } from './styles'
-
 
 class CreatePost extends Component {
     constructor(props) {
@@ -102,10 +98,8 @@ class CreatePost extends Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        createPost: (createPostData) => dispatch(createPost(createPostData)),
-    }
-}
+const mapDispatchToProps = (dispatch) => ({
+    createPost: (createPostData) => dispatch(createPost(createPostData)),
+})
 
 export default connect(null, mapDispatchToProps)(CreatePost);

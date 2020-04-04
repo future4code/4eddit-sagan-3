@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 
 export const LoginWrapper = styled.div`
   display: flex;
@@ -26,5 +26,9 @@ export const ButtonStyled = styled(Button)`
 
 export const RegisterWrapper = styled.div`
   margin-top: 1rem;
+  text-align: center;
+`
+
+export const WelcomeText = styled(Typography)`
   text-align: center;
 `

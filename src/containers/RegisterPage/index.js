@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { signup } from '../../actions'
+import { connect } from "react-redux";
+
 import { loginForm } from './constants'
 
 import Appbar from "../../components/Appbar";
 
 import { TextField } from "@material-ui/core";
-
 import { ButtonStyled, FormRegister, RegisterWrapper } from './styles'
-import { connect } from "react-redux";
 
 class RegisterPage extends Component {
   constructor(props) {

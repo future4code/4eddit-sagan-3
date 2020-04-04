@@ -26,17 +26,14 @@ class CreateComment extends Component {
         })
     }
 
-
     handleTextFieldChange = (event) => {
-        this.setState({
-            commentText: event.target.value
-        })
+        this.setState({ commentText: event.target.value })
     }
 
     render() {
         return (
             <>
-               <Loading open={this.state.loading} />
+                <Loading open={this.state.loading} />
 
                 <BoxCommentWrapper>
                     <FormCreateComment
@@ -45,7 +42,7 @@ class CreateComment extends Component {
 
                         <TitleCreateComment variant="h6" component="p">
                             Criar Comentário
-                </TitleCreateComment>
+                        </TitleCreateComment>
 
                         <TextField id="comment" label="Escreva seu comentário" variant="outlined" multiline rows={2}
                             type="text"
@@ -58,6 +55,7 @@ class CreateComment extends Component {
                             value={this.state.commentText}
                             onChange={this.handleTextFieldChange}
                         />
+                        
                         <ButtonStyled type="submit" color="primary" variant="contained"> Comentar </ButtonStyled>
                     </FormCreateComment>
                 </BoxCommentWrapper>

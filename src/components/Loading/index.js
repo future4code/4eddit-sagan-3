@@ -3,7 +3,6 @@ import { CircularProgress } from "@material-ui/core";
 import { BackdropStyled } from './styles'
 
 export default class Loading extends React.Component{
-
     constructor(props) {
         super(props)
         this.state = {
@@ -33,7 +32,7 @@ export default class Loading extends React.Component{
 // export default function Loading(props) {
 //     const [open, setOpen] = useState(props.open)
 
-//     const handleClose = () => { // a pessoa pode fechar se algo der errado, ou se não gosta de ver o loading
+//     const handleClose = () => { 
 //         setOpen(false);
 //     };
 
