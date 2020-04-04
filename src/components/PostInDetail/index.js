@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { voteInDetail, getPostsDetail, getPostId } from '../../actions'
 
-import { CardContent, Typography, IconButton } from "@material-ui/core";
+import { turnsDate } from '../Post/constants'
+
+import { Typography, IconButton, CardHeader } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { CardPost, PostFooter, PostHeader, VotesWrapper, Image } from './styles'
+import { CardPost, PostFooter, VotesWrapper, Image, AvatarStyled, Date, CardContentStyled } from './styles'
 
 class PostInDetail extends Component {
 
@@ -30,17 +32,34 @@ class PostInDetail extends Component {
     render() {
 
         const { post } = this.props
+        const date = turnsDate(post.createdAt)
+        const newAvatar = post.username.slice(0, 1).toUpperCase()
 
         return (
             <>
 
                 <CardPost>
-
-                    <PostHeader title={post.username} />
-                    <CardContent>
-                        <Typography variant="h6" component="p">
-                            {post.title}
-                        </Typography>
+                    
+                    <CardHeader
+                            title={
+                                <Typography variant="h5" component="p">
+                                    {post.title}
+                                </Typography>
+                            }
+                            subheader={
+                                <>
+                                <Typography>
+                                    {post.username} <Date>{date}</Date>
+                                </Typography>
+                                </>
+                            }
+                            avatar={
+                                <AvatarStyled aria-label="recipe">
+                                    {newAvatar}
+                                </AvatarStyled>
+                            }
+                        />
+                    <CardContentStyled>
                         {/* Fazendo uma brincadeirinha no front - sabemos que só vai funcionar no nosso site ;) */}
                         {post.text.includes('.jpeg') || post.text.includes('.png') || post.text.includes('.gif') ?
                             <Image src={post.text} />
@@ -49,7 +68,7 @@ class PostInDetail extends Component {
                                 {post.text}
                             </Typography>
                         }
-                    </CardContent>
+                    </CardContentStyled>
 
                     <PostFooter>
                         <VotesWrapper>

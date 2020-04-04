@@ -7,13 +7,22 @@ import Post from "../../components/Post"
 import Appbar from "../../components/Appbar";
 import Loading from '../../components/Loading/'
 
-import { FeedWrapper } from './styles'
+import { FeedWrapper, ButtonTop } from './styles'
+import { Publish } from '@material-ui/icons';
+
 
 
 class FeedPage extends Component {
 
   componentDidMount = () => {
     this.props.getPosts()
+  }
+
+  scrollToTop = () => {
+    window.scroll({
+      top: 0,
+      behavior: 'smooth'
+  });
   }
 
   render() {
@@ -27,6 +36,9 @@ class FeedPage extends Component {
     return (
       <>
         <Appbar page={"feed"} />
+        <ButtonTop onClick={this.scrollToTop} color="primary" size="medium">
+          <Publish/>
+        </ButtonTop>
 
         <FeedWrapper>
 

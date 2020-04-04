@@ -4,10 +4,10 @@ import { vote, getPostsDetail, getPostId } from '../../actions'
 
 import { turnsDate } from './constants'
 
-import { Typography, CardActionArea, IconButton } from "@material-ui/core";
+import { Typography, CardActionArea, IconButton, CardHeader } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { CardPost, Comments, PostFooter, PostHeader, VotesWrapper, Image, Date, CardContentStyled } from './styles'
+import { CardPost, Comments, PostFooter, VotesWrapper, Image, Date, CardContentStyled, AvatarStyled } from './styles'
 
 
 class Post extends Component {
@@ -35,6 +35,7 @@ class Post extends Component {
 
         const { post } = this.props
         const date = turnsDate(post.createdAt)
+        const newAvatar = post.username.slice(0, 1).toUpperCase()
 
         return (
             <>
@@ -42,19 +43,31 @@ class Post extends Component {
                 <CardPost>
 
                     <CardActionArea onClick={() => this.handlePostClicked(post.id)}>
-                        <PostHeader title={post.username} />
-                            <Date variant="overline" color="textSecondary" component="p">
-                                {date}
-                            </Date>
+                        <CardHeader
+                            title={
+                                <Typography variant="h5" component="p">
+                                    {post.title}
+                                </Typography>
+                            }
+                            subheader={
+                                <>
+                                <Typography>
+                                    {post.username} <Date>{date}</Date>
+                                </Typography>
+                                </>
+                            }
+                            avatar={
+                                <AvatarStyled aria-label="recipe">
+                                    {newAvatar}
+                                </AvatarStyled>
+                            }
+                        />
                         <CardContentStyled>
-                            <Typography variant="h6" component="p">
-                                {post.title}
-                            </Typography>
                             {/* Fazendo uma brincadeirinha no front - sabemos que só vai funcionar no nosso site ;) */}
                             {post.text.includes('.jpeg') || post.text.includes('.png') || post.text.includes('.gif') ?
                                 <Image src={post.text} />
                                 :
-                                <Typography variant="body1" color="textSecondary" component="p">
+                                <Typography variant="body1" component="p">
                                     {post.text}
                                 </Typography>
                             }
