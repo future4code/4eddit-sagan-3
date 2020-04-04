@@ -8,7 +8,7 @@ import Loading from '../../components/Loading/'
 import { TextField } from "@material-ui/core";
 
 
-import { BoxPostWrapper, ButtonStyled, FormCreatePost, TitleCreatePost } from './styles'
+import { BoxPostWrapper, ButtonStyled, FormCreatePost, TitleCreatePost, DivHeaderCreatePost } from './styles'
 
 
 class CreatePost extends Component {
@@ -43,6 +43,9 @@ class CreatePost extends Component {
     }
 
     render() {
+        const user = localStorage.getItem('user')
+        const newUser = JSON.parse(user)
+
         return (
             <>
                 <Loading open={this.state.loading} />
@@ -53,9 +56,16 @@ class CreatePost extends Component {
                         autoComplete="on"
                         onSubmit={this.handleSubmission}>
 
-                        <TitleCreatePost variant="h4" component="p">
-                            Criar Publicação
-                        </TitleCreatePost>
+                        <DivHeaderCreatePost>
+                            <TitleCreatePost variant="h6" component="p">
+                                Olá <strong>{newUser.username}</strong>!
+                            </TitleCreatePost>
+
+                            <TitleCreatePost variant="h4" component="p">
+                                Criar publicação
+                            </TitleCreatePost>
+                        </DivHeaderCreatePost>
+
 
                         <TextField id="titulo" label="Título" variant="outlined"
                             type="text"

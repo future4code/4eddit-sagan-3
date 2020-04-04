@@ -19,5 +19,8 @@ export const ButtonStyled = styled(Button)`
 
 export const TitleCreatePost = styled(Typography)`
   text-align:center;
+`
+
+export const DivHeaderCreatePost = styled.div`
   margin: 1rem;
 `
