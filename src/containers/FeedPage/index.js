@@ -9,6 +9,7 @@ import Loading from '../../components/Loading/'
 import ButtonScrollToTop from "../../components/ButtonScrollToTop";
 
 import { FeedWrapper } from './styles'
+import SharedSocialMedia from "../../components/SharedSocialMedia";
 
 
 class FeedPage extends Component {
@@ -32,16 +33,20 @@ class FeedPage extends Component {
       return a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0
     })
 
+    const shareUrl = "http://4eddit-sagan3.surge.sh/"
+
     return (
       <>
         <Appbar page={"feed"} />
 
-        <ButtonScrollToTop />
+        <ButtonScrollToTop/>
 
         <FeedWrapper>
 
           {/* Tá pesquisando? Não inventa de criar post... nem o facebook permite né rs */}
           {inputSearch.length === 0 && <CreatePost />}
+
+          <SharedSocialMedia url={shareUrl}/>
 
           {ordenedPosts.length > 0 ?
             ordenedPosts.map(post => <Post post={post} key={post.id} />)
