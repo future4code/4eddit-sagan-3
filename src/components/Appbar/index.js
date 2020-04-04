@@ -12,10 +12,10 @@ import { ToolbarStyled, Logo, DivSearch, DivSearchIcons, InputBaseStyled } from 
 
 class Appbar extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
-      inputSearch: ''
+      inputSearchInAppBar: ''
     }
   }
 
@@ -25,47 +25,53 @@ class Appbar extends Component {
   }
 
   onChangeInputSearch = (e) => {
-    this.setState({inputSearch: e.target.value})
+    this.setState({ inputSearchInAppBar: e.target.value })
   }
 
-  onPressEnter = (event) => {
-    const { allPosts, setFilteredPosts } = this.props
-    const { inputSearch } = this.state
+  onPressEnter = (e) => {
+    const { allPosts, setFilteredPosts, setInputSearch } = this.props
+    const { inputSearchInAppBar } = this.state
 
-		if (event.key === 'Enter') {
-      this.props.setInputSearch(this.state.inputSearch)
+    if (e.key === 'Enter') {
+      setInputSearch(inputSearchInAppBar)
 
-      if(inputSearch.length === 0) {
+      if (inputSearchInAppBar.length === 0) {
         setFilteredPosts(allPosts)
         return
       }
 
-			const searchData = allPosts.filter(post => {
-        const postText = post.text.toLowerCase()
-        const postTitle = post.title.toLowerCase()
-        const inputSearchLowerCase = inputSearch.toLowerCase()
-        
+      const searchData = allPosts.filter(post => {
+        const postText = post.text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+        const postTitle = post.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+        const inputSearchLowerCase = inputSearchInAppBar.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+
         return postText.includes(inputSearchLowerCase) || postTitle.includes(inputSearchLowerCase)
       })
-      console.log(searchData)
+ 
       setFilteredPosts(searchData)
-		}
-	}
+    }
+  }
 
   render() {
     const { goToFeed, goToLogin, goToProfile, page, token } = this.props
-    const { inputSearch } = this.state
+    const { inputSearchInAppBar } = this.state
 
     const buttonLogin = <Button onClick={goToLogin} color="inherit">Login</Button>
-
     const buttonFeed = <Button onClick={goToFeed} color="inherit">Feed</Button>
-
     const buttonProfile = <Button onClick={goToProfile} color="inherit">Profile</Button>
-
-    const buttonLogout =
-      <IconButton color="inherit" onClick={this.logout}>
-        <PowerSettingsNewRounded />
-      </IconButton>
+    const buttonLogout = <IconButton color="inherit" onClick={this.logout}><PowerSettingsNewRounded /></IconButton>
+    const buttonSearch = <DivSearch>
+      <DivSearchIcons>
+        <Search />
+      </DivSearchIcons>
+      <InputBaseStyled
+        placeholder="Buscar..."
+        inputProps={{ 'aria-label': 'search' }}
+        value={inputSearchInAppBar}
+        onChange={this.onChangeInputSearch}
+        onKeyDown={this.onPressEnter}
+      />
+    </DivSearch>
 
     let buttonsPersonalized
     switch (page) {
@@ -85,18 +91,7 @@ class Appbar extends Component {
       case "feed":
         buttonsPersonalized =
           <>
-            <DivSearch>
-              <DivSearchIcons>
-                <Search/>
-              </DivSearchIcons>
-              <InputBaseStyled
-                placeholder="Buscar..."
-                inputProps={{ 'aria-label': 'search' }}
-                value={inputSearch}
-                onChange={this.onChangeInputSearch}
-                onKeyDown={this.onPressEnter}
-              />
-            </DivSearch>
+            {buttonSearch}
             <div>
               {buttonProfile}
               {buttonLogout}
@@ -106,12 +101,10 @@ class Appbar extends Component {
 
       case "profile":
         buttonsPersonalized =
-          <>
             <div>
               {buttonFeed}
               {buttonLogout}
             </div>
-          </>
         break;
 
       case "register":
@@ -143,7 +136,6 @@ class Appbar extends Component {
 
 const mapStateToProps = (state) => ({
   allPosts: state.posts.allPosts,
-  inputSearch: state.posts.inputSearch
 })
 
 const mapDispatchToProps = (dispatch) => {

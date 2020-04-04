@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getPosts } from '../../actions'
+
 import CreatePost from "../../components/CreatePost"
 import Post from "../../components/Post"
-
 import Appbar from "../../components/Appbar";
 import Loading from '../../components/Loading'
 
 import { ProfileWrapper } from './styles'
+import ButtonScrollToTop from "../../components/ButtonScrollToTop";
 
 class ProfilePage extends Component {
   constructor(props) {
@@ -33,12 +34,12 @@ class ProfilePage extends Component {
     const user = localStorage.getItem('user')
     const newUser = JSON.parse(user)
     const myPosts = ordenedPosts.filter(post => post.username === newUser.username)
-    // console.log(myPosts)
 
     return (
       <>
         <Appbar page={"profile"} />
         <Loading open={this.state.loading} />
+        <ButtonScrollToTop/>
 
         <ProfileWrapper>
 

@@ -12,6 +12,7 @@ import Loading from '../../components/Loading/'
 import PostInDetail from "../../components/PostInDetail";
 import CreateComment from "../../components/CreateComment";
 import Comment from "../../components/Comment";
+import ButtonScrollToTop from "../../components/ButtonScrollToTop";
 
 class DetailPage extends Component {
 
@@ -43,6 +44,7 @@ class DetailPage extends Component {
     return (
       <>
         <Appbar page={"detail"} />
+        <ButtonScrollToTop/>
 
         { postDetail
 
