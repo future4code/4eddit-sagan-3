@@ -9,7 +9,19 @@ Desenvolvimento de aplicações completas, incluindo frontend Web com React e ba
 
 Site do projeto: [link](http://4eddit-sagan3.surge.sh/)
 
+**Versão Web**
+<p align="center">
+<img  height='400' src='https://user-images.githubusercontent.com/45580434/78464868-deb08780-76c4-11ea-853a-ad3b7c050ee0.gif'>
+</p>
 
+
+**Versão mobile**
+<p align="center">
+  <img  height='400' src='https://user-images.githubusercontent.com/45580434/78464747-77de9e80-76c3-11ea-9329-1e083568e5b1.gif'>
+</p>
+
+
+## Escopo
 
 Essa semana, vocês irão implementar uma rede social! Já fizemos vários protótipos de redes sociais, mas nenhuma delas realmente funcional. A ideia agora é fazer uma rede real, com cadastro, login, posts, likes e comentários. Para isso, iremos nos basear no **[reddit.com](https://reddit.com).**
 
