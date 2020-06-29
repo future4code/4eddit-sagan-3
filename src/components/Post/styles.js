@@ -31,11 +31,6 @@ export const Date = styled.span`
   letter-spacing: 1px;
 `
 
-export const CardContentStyled = styled(CardContent)`
-  padding-top: 0;
-  padding-bottom: 0;
-`
-
 export const AvatarStyled = styled(Avatar)`
   background-color: rgba(163, 215, 255, 1);
 `

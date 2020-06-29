@@ -4,10 +4,10 @@ import { vote, getPostsDetail, getPostId } from '../../actions'
 
 import { turnsDate } from '../../constants'
 
-import { Typography, CardActionArea, IconButton, CardHeader } from "@material-ui/core";
+import { Typography, CardActionArea, IconButton, CardHeader, CardContent } from "@material-ui/core";
 import { ArrowDownwardRounded, ArrowUpwardRounded } from '@material-ui/icons';
 
-import { CardPost, Comments, PostFooter, VotesWrapper, Image, Date, CardContentStyled, AvatarStyled } from './styles'
+import { CardPost, Comments, PostFooter, VotesWrapper, Image, Date, AvatarStyled } from './styles'
 
 function Post(props) {
 
@@ -55,7 +55,7 @@ function Post(props) {
                         </AvatarStyled>
                     }
                 />
-                <CardContentStyled>
+                <CardContent>
                     {/* Fazendo uma brincadeirinha no front - sabemos que só vai funcionar no nosso site ;) */}
                     {post.text.includes('.jpeg') || post.text.includes('.png') || post.text.includes('.gif') ?
                         <Image src={post.text} />
@@ -64,7 +64,7 @@ function Post(props) {
                             {post.text}
                         </Typography>
                     }
-                </CardContentStyled>
+                </CardContent>
             </CardActionArea>
 
             <PostFooter>
